@@ -1,10 +1,5 @@
-**This is a template README.md.  Be sure to update this with project specific content that describes your performance test project.**
 
 # trader-goods-profiles-ui-performance-tests
-
-Performance test suite for the `<digital service name>`, using [performance-test-runner](https://github.com/hmrc/performance-test-runner) under the hood.
-
-## Pre-requisites
 
 ### Services
 
@@ -13,11 +8,8 @@ Start Mongo Docker container as follows:
 ```bash
 docker run --rm -d -p 27017:27017 --name mongo mongo:4.4
 ```
-
-Start `PLATFORM_TEST_EXAMPLE_UI_JOURNEY_TESTS` services as follows:
-
-```bash
-sm2 --start PLATFORM_TEST_EXAMPLE_UI_JOURNEY_TESTS
+```shell
+sm2 --start TGP_FE
 ```
 
 ### Logging
@@ -30,22 +22,32 @@ Do **NOT** run a full performance test against staging from your local machine. 
 
 ## Tests
 
-Run smoke test (locally) as follows:
+### Local
+
+To run smoke performance tests locally, execute the script:
 
 ```bash
-sbt -Dperftest.runSmokeTest=true -DrunLocal=true gatling:test
+./run_local_smoke.sh
 ```
 
-Run full performance test (locally) as follows:
+To run full performance tests locally, execute the script:
 
 ```bash
-sbt -DrunLocal=true gatling:test
+./run_local.sh
 ```
 
-Run smoke test (staging) as follows:
+### Staging
+
+To run smoke performance tests on Staging, execute the script:
 
 ```bash
-sbt -Dperftest.runSmokeTest=true -DrunLocal=false gatling:test
+./run_staging_smoke.sh
+```
+
+To run full performance tests on Staging, execute the script:
+
+```bash
+./run_staging.sh
 ```
 
 ## Scalafmt
