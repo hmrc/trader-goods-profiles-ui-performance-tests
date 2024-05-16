@@ -28,6 +28,7 @@ class TgpSimulation extends PerformanceTestRunner {
       getAuthWizardPage,
       postAuthWizardPage,
       getTGPProfilePage,
+      postTGPProfilePage,
       getUkimsNumberPage,
       postUkimsNumberPage,
       getNirmsQuestionPage,
