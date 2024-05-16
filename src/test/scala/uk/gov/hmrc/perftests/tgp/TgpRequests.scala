@@ -36,7 +36,7 @@ object TgpRequests extends Configuration {
     postPage(
       "TGP Profile Page",
       s"$tgpUrl/trader-goods-profiles/profile-setup",
-      Map[String, String]
+      Map.empty[String, String]
     )
 
   def getUkimsNumberPage: HttpRequestBuilder =
