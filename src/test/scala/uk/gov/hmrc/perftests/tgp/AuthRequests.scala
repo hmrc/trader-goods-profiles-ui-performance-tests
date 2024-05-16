@@ -26,13 +26,13 @@ object AuthRequests extends Configuration {
   private val authWizardUrl: String  = s"$authUrl/auth-login-stub/gg-sign-in"
   private val redirectionUrl: String = "/trader-goods-profiles/profile-setup"
 
-  val navigateToAuthWizard: HttpRequestBuilder =
+  val getAuthWizardPage: HttpRequestBuilder =
     http("GET Navigate to /auth-login-stub/gg-sign-in")
       .get(authWizardUrl)
       .check(status.is(OK.code()))
       .check(regex("Authority Wizard"))
 
-  def submitAuthWizard: HttpRequestBuilder =
+  def postAuthWizardPage: HttpRequestBuilder =
     http("POST Log in to auth")
       .post(authWizardUrl)
       .formParam("redirectionUrl", redirectionUrl)
