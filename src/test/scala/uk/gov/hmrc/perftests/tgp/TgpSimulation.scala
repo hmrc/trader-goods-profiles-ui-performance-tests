@@ -18,16 +18,29 @@ package uk.gov.hmrc.perftests.tgp
 
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
-import uk.gov.hmrc.perftests.tgp.AuthRequests.{navigateToAuthWizard, submitAuthWizard}
-import uk.gov.hmrc.perftests.tgp.TgpRequests.navigateToTGPHome
+import uk.gov.hmrc.perftests.tgp.AuthRequests.{getAuthWizardPage, postAuthWizardPage}
+import uk.gov.hmrc.perftests.tgp.TgpRequests._
 
 class TgpSimulation extends PerformanceTestRunner {
 
   val fullJourney: Seq[HttpRequestBuilder] =
     Seq(
-      navigateToAuthWizard,
-      submitAuthWizard,
-//      navigateToTGPHome
+      getAuthWizardPage,
+      postAuthWizardPage,
+      getTGPProfilePage,
+      getUkimsNumberPage,
+      postUkimsNumberPage,
+      getNirmsQuestionPage,
+      postNirmsQuestionPage(true),
+      getNirmsNumberPage,
+      postNirmsNumberPage,
+      getNiphlQuestionPage,
+      postNiphlQuestionPage(true),
+      getNiphlNumberPage,
+      postNiphlNumberPage,
+      getCheckYourAnswersPage,
+      postCheckYourAnswersPage,
+      getHomePage
     )
 
   setup("full-journey", "profile setup")

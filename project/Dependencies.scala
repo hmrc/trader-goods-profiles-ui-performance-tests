@@ -10,5 +10,5 @@ object Dependencies {
     "uk.gov.hmrc"          %% "performance-test-runner"   % "5.6.0"
   ).map(_ % Test)
 
-  def apply(): Seq[ModuleID]      = test
+  def apply(): Seq[ModuleID] = test
 }

@@ -61,29 +61,4 @@ object Requests {
       .check(status.is(SEE_OTHER.code()))
       .check(currentLocation.is(currentPage))
       .disableFollowRedirect
-
-  def postPageAndExtractDraftId(
-    stepName: String,
-    postToken: Boolean,
-    currentPage: String,
-    nextPage: String,
-    values: Map[String, String]
-  ): HttpRequestBuilder = {
-
-    val extractDraftId: String => String = { (s: String) =>
-      s
-        .replace("/trader-goods-profiles/", "")
-        .replace(s"/$nextPage", "")
-    }
-
-    http("POST " + stepName)
-      .post(currentPage)
-      .formParamMap(if (postToken) values + ("csrfToken" -> f"$${csrfToken}") else values)
-      .check(status.is(SEE_OTHER.code()))
-      .check(
-        header("location")
-          .transform(s => extractDraftId(s))
-          .saveAs("draftId")
-      )
-  }
 }
