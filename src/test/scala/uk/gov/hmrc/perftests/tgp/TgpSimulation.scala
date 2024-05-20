@@ -23,7 +23,7 @@ import uk.gov.hmrc.perftests.tgp.TgpRequests._
 
 class TgpSimulation extends PerformanceTestRunner {
 
-  val fullJourney: Seq[HttpRequestBuilder] =
+  val profileSetupJourneyWithNirmsAndNiphl: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
       postAuthWizardPage,
@@ -44,8 +44,72 @@ class TgpSimulation extends PerformanceTestRunner {
       getHomePage
     )
 
-  setup("full-journey", "profile setup")
-    .withRequests(fullJourney: _*)
+  val profileSetupJourneyWithoutNirmsAndNiphl: Seq[HttpRequestBuilder] =
+    Seq(
+      getAuthWizardPage,
+      postAuthWizardPage,
+      getTGPProfilePage,
+      postTGPProfilePage,
+      getUkimsNumberPage,
+      postUkimsNumberPage,
+      getNirmsQuestionPage,
+      postNirmsQuestionPage(false),
+      getNiphlQuestionPage,
+      postNiphlQuestionPage(false),
+      getCheckYourAnswersPage,
+      postCheckYourAnswersPage,
+      getHomePage
+    )
+
+  val profileSetupJourneyWithoutNirmsAndWithNiphl: Seq[HttpRequestBuilder] =
+    Seq(
+      getAuthWizardPage,
+      postAuthWizardPage,
+      getTGPProfilePage,
+      postTGPProfilePage,
+      getUkimsNumberPage,
+      postUkimsNumberPage,
+      getNirmsQuestionPage,
+      postNirmsQuestionPage(false),
+      getNiphlQuestionPage,
+      postNiphlQuestionPage(true),
+      getNiphlNumberPage,
+      postNiphlNumberPage,
+      getCheckYourAnswersPage,
+      postCheckYourAnswersPage,
+      getHomePage
+    )
+
+  val profileSetupJourneyWithNirmsAndWithoutNiphl: Seq[HttpRequestBuilder] =
+    Seq(
+      getAuthWizardPage,
+      postAuthWizardPage,
+      getTGPProfilePage,
+      postTGPProfilePage,
+      getUkimsNumberPage,
+      postUkimsNumberPage,
+      getNirmsQuestionPage,
+      postNirmsQuestionPage(true),
+      getNirmsNumberPage,
+      postNirmsNumberPage,
+      getNiphlQuestionPage,
+      postNiphlQuestionPage(false),
+      getCheckYourAnswersPage,
+      postCheckYourAnswersPage,
+      getHomePage
+    )
+
+  setup("WithNirmsAndNiphl", "Profile Setup Journey With NIRMS And NIPHL")
+    .withRequests(profileSetupJourneyWithNirmsAndNiphl: _*)
+
+  setup("WithoutNirmsAndNiphl", "Profile Setup Journey Without NIRMS And NIPHL")
+    .withRequests(profileSetupJourneyWithoutNirmsAndNiphl: _*)
+
+  setup("WithoutNirmsAndWithNiphl", "Profile Setup Journey Without NIRMS And With NIPHL")
+    .withRequests(profileSetupJourneyWithoutNirmsAndWithNiphl: _*)
+
+  setup("WithNirmsAndWithoutNiphl", "Profile Setup Journey With NIRMS And Without NIPHL")
+    .withRequests(profileSetupJourneyWithNirmsAndWithoutNiphl: _*)
 
   runSimulation()
 

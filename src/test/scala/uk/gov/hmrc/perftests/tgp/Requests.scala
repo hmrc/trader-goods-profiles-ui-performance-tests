@@ -24,16 +24,17 @@ import io.netty.handler.codec.http.HttpResponseStatus.{OK, SEE_OTHER}
 object Requests {
 
   def getPage(
-    stepName: String,
+    pageTitle: String,
     saveToken: Boolean,
     url: String,
     pageContent: Option[String] = None,
     expectedStatus: Int = OK.code()
   ): HttpRequestBuilder = {
-    val builder = http("GET " + stepName)
+    val builder = http("GET " + pageTitle)
       .get(url)
       .check(status.is(expectedStatus))
       .check(currentLocation.is(url))
+      .check(regex(pageTitle))
 
     val httpRequestBuilder = pageContent match {
       case Some(value) => builder.check(substring(value))
