@@ -34,6 +34,7 @@ object Requests {
       .get(url)
       .check(status.is(expectedStatus))
       .check(currentLocation.is(url))
+      .check(regex(stepName))
 
     val httpRequestBuilder = pageContent match {
       case Some(value) => builder.check(substring(value))

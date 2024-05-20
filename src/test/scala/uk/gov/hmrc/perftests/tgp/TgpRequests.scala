@@ -27,7 +27,7 @@ object TgpRequests extends Configuration {
 
   def getTGPProfilePage: HttpRequestBuilder =
     getPage(
-      "TGP Profile Page",
+      "Setting up your profile",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/profile-setup"
     )
@@ -41,7 +41,7 @@ object TgpRequests extends Configuration {
 
   def getUkimsNumberPage: HttpRequestBuilder =
     getPage(
-      "UKIMS Number page",
+      "UK Internal Market Scheme number",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/ukims-number"
     )
@@ -59,7 +59,7 @@ object TgpRequests extends Configuration {
 
   def getNirmsQuestionPage: HttpRequestBuilder =
     getPage(
-      "NIRMS Question page",
+      "Northern Ireland Retail Movement Scheme",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/nirms-question"
     )
@@ -73,7 +73,7 @@ object TgpRequests extends Configuration {
 
   def getNirmsNumberPage: HttpRequestBuilder =
     getPage(
-      "NIRMS Number page",
+      "What is your NIRMS number?",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/nirms-number"
     )
@@ -91,7 +91,7 @@ object TgpRequests extends Configuration {
 
   def getNiphlQuestionPage: HttpRequestBuilder =
     getPage(
-      "NIPHL Question page",
+      "Northern Ireland plant health label",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/niphl-question"
     )
@@ -105,7 +105,7 @@ object TgpRequests extends Configuration {
 
   def getNiphlNumberPage: HttpRequestBuilder =
     getPage(
-      "NIPHL Number page",
+      "NIPHL registration number",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/niphl-number"
     )
@@ -123,7 +123,7 @@ object TgpRequests extends Configuration {
 
   def getCheckYourAnswersPage: HttpRequestBuilder =
     getPage(
-      "Check your answers page",
+      "Check your answers",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/cya-nirms-niphls"
     )
@@ -137,7 +137,7 @@ object TgpRequests extends Configuration {
 
   def getHomePage: HttpRequestBuilder =
     getPage(
-      "HomePage",
+      "Trader Goods Profile homepage",
       s"$tgpUrl/trader-goods-profiles/homepage"
     )
 }
