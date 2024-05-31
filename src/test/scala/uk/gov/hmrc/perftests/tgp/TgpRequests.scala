@@ -121,14 +121,14 @@ object TgpRequests extends Configuration {
     )
   }
 
-  def getCheckYourAnswersPage: HttpRequestBuilder =
+  def getProfileSetupCYAPage: HttpRequestBuilder =
     getPage(
       "Check your answers",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/cya-nirms-niphls"
     )
 
-  def postCheckYourAnswersPage: HttpRequestBuilder =
+  def postProfileSetupCYAPage: HttpRequestBuilder =
     postPage(
       "Check your answers page",
       s"$tgpUrl/trader-goods-profiles/cya-nirms-niphls",
@@ -139,5 +139,147 @@ object TgpRequests extends Configuration {
     getPage(
       "Trader Goods Profile homepage",
       s"$tgpUrl/trader-goods-profiles/homepage"
+    )
+
+  def navigateToHomePage: HttpRequestBuilder =
+    getPage(
+      "Trader Goods Profile homepage",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/homepage"
+    )
+
+  def postHomePage: HttpRequestBuilder =
+    postPage(
+      "start create record process",
+      s"$tgpUrl/trader-goods-profiles/homepage",
+      Map.empty[String, String]
+    )
+
+  def getCreatingAGoodsRecordPage: HttpRequestBuilder =
+    getPage(
+      "Creating a goods record",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/create-record-start"
+    )
+
+  def postCreatingAGoodsRecordPage: HttpRequestBuilder =
+    postPage(
+      "Create a goods record",
+      s"$tgpUrl/trader-goods-profiles/create-record/create-record-start",
+      Map.empty[String, String]
+    )
+
+  def getTraderReferencePage: HttpRequestBuilder =
+    getPage(
+      "Trader reference",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/trader-reference"
+    )
+
+  def postTraderReferencePage: HttpRequestBuilder = {
+    val enterTraderReference = Map(
+      "value" -> "trader"
+    )
+    postPage(
+      "enter your Trader Reference",
+      s"$tgpUrl/trader-goods-profiles/create-record/trader-reference",
+      enterTraderReference
+    )
+  }
+
+  def getGoodsDescriptionQuestionPage: HttpRequestBuilder =
+    getPage(
+      "Goods description",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/goods-description-question"
+    )
+
+  def postGoodsDescriptionQuestionPage(answer: Boolean): HttpRequestBuilder =
+    postPage(
+      "Click Yes or No on Goods Description Question Page",
+      s"$tgpUrl/trader-goods-profiles/create-record/goods-description-question",
+      answer.toPayload
+    )
+
+  def getGoodsDescriptionPage: HttpRequestBuilder =
+    getPage(
+      "Goods description",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/gods-description"
+    )
+
+  def postGoodsDescriptionPage: HttpRequestBuilder = {
+    val enterGoodsDescription = Map(
+      "value" -> "Goods"
+    )
+    postPage(
+      "enter your Goods Description",
+      s"$tgpUrl/trader-goods-profiles/create-record/goods-description",
+      enterGoodsDescription
+    )
+  }
+
+  def getCountryOfOriginPage: HttpRequestBuilder =
+    getPage(
+      "Country of origin",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/country-of-origin"
+    )
+
+  def postCountryOfOriginPage: HttpRequestBuilder = {
+    val enterCountryOfOrigin = Map(
+      "value" -> "UK"
+    )
+    postPage(
+      "enter the Country Of Origin",
+      s"$tgpUrl/trader-goods-profiles/country-of-origin",
+      enterCountryOfOrigin
+    )
+  }
+
+  def getCommodityCodePage: HttpRequestBuilder =
+    getPage(
+      "Commodity code",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/commodity-code"
+    )
+
+  def postCommodityCodePage: HttpRequestBuilder = {
+    val enterCommodityCode = Map(
+      "value" -> "1234567890"
+    )
+    postPage(
+      "enter your Commodity Code",
+      s"$tgpUrl/trader-goods-profiles/create-record/commodity-code",
+      enterCommodityCode
+    )
+  }
+
+  def getCommodityCodeResultPage: HttpRequestBuilder =
+    getPage(
+      "Results for 0702000007",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/commodity-code-result"
+    )
+
+  def postCommodityCodeResultPage: HttpRequestBuilder =
+    postPage(
+      "Click Yes on Commodity Code Result Page",
+      s"$tgpUrl/trader-goods-profiles/create-record/commodity-code-result",
+      true.toPayload
+    )
+
+  def getCreateRecordCYAPage: HttpRequestBuilder =
+    getPage(
+      "Check your answers",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/cya-create-record"
+    )
+
+  def postCreateRecordCYAPage: HttpRequestBuilder =
+    postPage(
+      "Check your answers page",
+      s"$tgpUrl/trader-goods-profiles/create-record/cya-create-record",
+      Map.empty[String, String]
     )
 }
