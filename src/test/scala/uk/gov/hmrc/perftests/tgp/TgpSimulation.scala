@@ -103,7 +103,7 @@ class TgpSimulation extends PerformanceTestRunner {
     Seq(
       getAuthWizardPage,
       postAuthWizardPageHome,
-      navigateToHomePage,
+      getHomePage,
       postHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
@@ -128,7 +128,7 @@ class TgpSimulation extends PerformanceTestRunner {
     Seq(
       getAuthWizardPage,
       postAuthWizardPageHome,
-      navigateToHomePage,
+      getHomePage,
       postHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,

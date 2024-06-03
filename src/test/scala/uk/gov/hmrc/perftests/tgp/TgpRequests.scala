@@ -141,13 +141,6 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/homepage"
     )
 
-  def navigateToHomePage: HttpRequestBuilder =
-    getPage(
-      "Trader Goods Profile homepage",
-      saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/homepage"
-    )
-
   def postHomePage: HttpRequestBuilder =
     postPage(
       "start create record process",
