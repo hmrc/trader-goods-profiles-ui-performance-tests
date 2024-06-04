@@ -116,7 +116,7 @@ class TgpSimulation extends PerformanceTestRunner {
       getCountryOfOriginPage,
       postCountryOfOriginPage,
       getCommodityCodePage,
-      postCommodityCodePage,
+      postCommodityCodePage(true),
       getCommodityCodeResultPage,
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
@@ -139,12 +139,50 @@ class TgpSimulation extends PerformanceTestRunner {
       getCountryOfOriginPage,
       postCountryOfOriginPage,
       getCommodityCodePage,
-      postCommodityCodePage,
+      postCommodityCodePage(true),
       getCommodityCodeResultPage,
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
       postCreateRecordCYAPage,
       getHomePage
+    )
+
+  val createRecordJourneyWithGoodsReferenceIncorrectCode: Seq[HttpRequestBuilder] =
+    Seq(
+      getAuthWizardPage,
+      postAuthWizardPageHome,
+      getHomePage,
+      postHomePage,
+      getCreatingAGoodsRecordPage,
+      postCreatingAGoodsRecordPage,
+      getTraderReferencePage,
+      postTraderReferencePage,
+      getGoodsDescriptionQuestionPage,
+      postGoodsDescriptionQuestionPage(false),
+      getGoodsDescriptionPage,
+      postGoodsDescriptionPage,
+      getCountryOfOriginPage,
+      postCountryOfOriginPage,
+      getCommodityCodePage,
+      postCommodityCodePage(false),
+    )
+
+  val createRecordJourneyWithoutGoodsReferenceIncorrectCode: Seq[HttpRequestBuilder] =
+    Seq(
+      getAuthWizardPage,
+      postAuthWizardPageHome,
+      getHomePage,
+      postHomePage,
+      getCreatingAGoodsRecordPage,
+      postCreatingAGoodsRecordPage,
+      getTraderReferencePage,
+      postTraderReferencePage,
+      getGoodsDescriptionQuestionPage,
+      postGoodsDescriptionQuestionPage(true),
+      getCountryOfOriginPage,
+      postCountryOfOriginPage,
+      getCommodityCodePage,
+      postCommodityCodePage(false),
     )
 
   setup("WithNirmsAndNiphl", "Profile Setup Journey With NIRMS And NIPHL")
@@ -164,6 +202,12 @@ class TgpSimulation extends PerformanceTestRunner {
 
   setup("WithoutGoodsDescription", "Create Record Journey Without Goods Description")
     .withRequests(createRecordJourneyWithoutGoodsReference: _*)
+
+  setup("WithGoodsDescriptionIncorrectCode", "Create Record Journey With Goods Description and incorrect Commodity Code")
+    .withRequests(createRecordJourneyWithGoodsReferenceIncorrectCode: _*)
+
+  setup("WithoutGoodsDescriptionIncorrectCode", "Create Record Journey Without Goods Description and incorrect Commodity Code")
+    .withRequests(createRecordJourneyWithoutGoodsReferenceIncorrectCode: _*)
 
   runSimulation()
 

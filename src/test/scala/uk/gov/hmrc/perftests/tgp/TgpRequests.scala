@@ -237,9 +237,13 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/create-record/commodity-code"
     )
 
-  def postCommodityCodePage: HttpRequestBuilder = {
+  def postCommodityCodePage(valid: Boolean): HttpRequestBuilder = {
     val enterCommodityCode = Map(
-      "value" -> "1234567890"
+      if (valid) {
+        "value" -> "1234567890"
+      }
+      else
+        "value" -> "1234567891"
     )
     postPage(
       "enter your Commodity Code",
