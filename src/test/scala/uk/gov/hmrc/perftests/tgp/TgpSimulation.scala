@@ -164,7 +164,7 @@ class TgpSimulation extends PerformanceTestRunner {
       getCountryOfOriginPage,
       postCountryOfOriginPage,
       getCommodityCodePage,
-      postCommodityCodePage(false),
+      postCommodityCodePage(false)
     )
 
   val createRecordJourneyWithoutGoodsReferenceIncorrectCode: Seq[HttpRequestBuilder] =
@@ -182,7 +182,25 @@ class TgpSimulation extends PerformanceTestRunner {
       getCountryOfOriginPage,
       postCountryOfOriginPage,
       getCommodityCodePage,
-      postCommodityCodePage(false),
+      postCommodityCodePage(false)
+    )
+
+  val accreditationJourney: Seq[HttpRequestBuilder] =
+    Seq(
+      getAuthWizardPage,
+      postAuthWizardPageHome,
+      getHomePage,
+      postHomePage,
+      getAdviceStartPage,
+      postAdviceStartPage,
+      getAskNamePage,
+      postAskNamePage,
+      getAskEmailPage,
+      postAskEmailPage,
+      getAdviceCYAPage,
+      postAdviceCYAPage,
+      getAdviceSuccessPage,
+      postAdviceSuccessPage
     )
 
   setup("WithNirmsAndNiphl", "Profile Setup Journey With NIRMS And NIPHL")
@@ -203,11 +221,20 @@ class TgpSimulation extends PerformanceTestRunner {
   setup("WithoutGoodsDescription", "Create Record Journey Without Goods Description")
     .withRequests(createRecordJourneyWithoutGoodsReference: _*)
 
-  setup("WithGoodsDescriptionIncorrectCode", "Create Record Journey With Goods Description and incorrect Commodity Code")
+  setup(
+    "WithGoodsDescriptionIncorrectCode",
+    "Create Record Journey With Goods Description and incorrect Commodity Code"
+  )
     .withRequests(createRecordJourneyWithGoodsReferenceIncorrectCode: _*)
 
-  setup("WithoutGoodsDescriptionIncorrectCode", "Create Record Journey Without Goods Description and incorrect Commodity Code")
+  setup(
+    "WithoutGoodsDescriptionIncorrectCode",
+    "Create Record Journey Without Goods Description and incorrect Commodity Code"
+  )
     .withRequests(createRecordJourneyWithoutGoodsReferenceIncorrectCode: _*)
+
+  setup("AccreditationJourney", "Accreditation Journey")
+    .withRequests(accreditationJourney: _*)
 
   runSimulation()
 

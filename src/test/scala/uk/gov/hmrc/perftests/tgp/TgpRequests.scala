@@ -279,4 +279,82 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/create-record/cya-create-record",
       Map.empty[String, String]
     )
+
+  def getAdviceStartPage: HttpRequestBuilder =
+    getPage(
+      "Asking HMRC for advice",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/advice-start"
+    )
+
+  def postAdviceStartPage: HttpRequestBuilder =
+    postPage(
+      "Asking HMRC for advice",
+      s"$tgpUrl/trader-goods-profiles/advice-start",
+      Map.empty[String, String]
+    )
+
+  def getAskNamePage: HttpRequestBuilder =
+    getPage(
+      "What is your name?",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/advice/name"
+    )
+
+  def postAskNamePage: HttpRequestBuilder = {
+    val enterName = Map(
+      "value" -> "TestFirstName TestLastName"
+    )
+    postPage(
+      "What is your name?",
+      s"$tgpUrl/trader-goods-profiles/advice/name",
+      enterName
+    )
+  }
+
+  def getAskEmailPage: HttpRequestBuilder =
+    getPage(
+      "What is your email address?",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/advice/email"
+    )
+
+  def postAskEmailPage: HttpRequestBuilder = {
+    val enterEmail = Map(
+      "value" -> "Test@test.com"
+    )
+    postPage(
+      "What is your email address?",
+      s"$tgpUrl/trader-goods-profiles/advice/email",
+      enterEmail
+    )
+  }
+
+  def getAdviceCYAPage: HttpRequestBuilder =
+    getPage(
+      "Check your answers before sending your request for advice",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/advice/check-your-answers"
+    )
+
+  def postAdviceCYAPage: HttpRequestBuilder =
+    postPage(
+      "Advice Check your answers",
+      s"$tgpUrl/trader-goods-profiles/advice/check-your-answers",
+      Map.empty[String, String]
+    )
+
+  def getAdviceSuccessPage: HttpRequestBuilder =
+    getPage(
+      "Request for advice complete",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/advice/success"
+    )
+
+  def postAdviceSuccessPage: HttpRequestBuilder =
+    postPage(
+      "Request for advice complete",
+      s"$tgpUrl/trader-goods-profiles/advice/success",
+      Map.empty[String, String]
+    )
 }
