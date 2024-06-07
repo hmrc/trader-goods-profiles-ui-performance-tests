@@ -104,7 +104,6 @@ class TgpSimulation extends PerformanceTestRunner {
       getAuthWizardPage,
       postAuthWizardPageHome,
       getHomePage,
-      postHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
       getTraderReferencePage,
@@ -121,7 +120,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
       postCreateRecordCYAPage,
-      getHomePage
+      getCreateRecordSuccessPage
     )
 
   val createRecordJourneyWithoutGoodsReference: Seq[HttpRequestBuilder] =
@@ -129,7 +128,6 @@ class TgpSimulation extends PerformanceTestRunner {
       getAuthWizardPage,
       postAuthWizardPageHome,
       getHomePage,
-      postHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
       getTraderReferencePage,
@@ -144,7 +142,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
       postCreateRecordCYAPage,
-      getHomePage
+      getCreateRecordSuccessPage
     )
 
   val createRecordJourneyWithGoodsReferenceIncorrectCode: Seq[HttpRequestBuilder] =
@@ -152,7 +150,6 @@ class TgpSimulation extends PerformanceTestRunner {
       getAuthWizardPage,
       postAuthWizardPageHome,
       getHomePage,
-      postHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
       getTraderReferencePage,
@@ -172,7 +169,6 @@ class TgpSimulation extends PerformanceTestRunner {
       getAuthWizardPage,
       postAuthWizardPageHome,
       getHomePage,
-      postHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
       getTraderReferencePage,
@@ -190,7 +186,6 @@ class TgpSimulation extends PerformanceTestRunner {
       getAuthWizardPage,
       postAuthWizardPageHome,
       getHomePage,
-      postHomePage,
       getAdviceStartPage,
       postAdviceStartPage,
       getAskNamePage,
@@ -199,8 +194,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postAskEmailPage,
       getAdviceCYAPage,
       postAdviceCYAPage,
-      getAdviceSuccessPage,
-      postAdviceSuccessPage
+      getAdviceSuccessPage
     )
 
   setup("WithNirmsAndNiphl", "Profile Setup Journey With NIRMS And NIPHL")

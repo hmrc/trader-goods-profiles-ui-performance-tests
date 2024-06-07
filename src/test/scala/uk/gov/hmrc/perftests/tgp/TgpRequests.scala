@@ -17,7 +17,7 @@
 package uk.gov.hmrc.perftests.tgp
 
 import io.gatling.http.request.builder.HttpRequestBuilder
-import uk.gov.hmrc.perftests.tgp.Requests.{getPage, postPage}
+import uk.gov.hmrc.perftests.tgp.Requests.{getPage, postErrorPage, postPage}
 
 object TgpRequests extends Configuration {
 
@@ -141,13 +141,6 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/homepage"
     )
 
-  def postHomePage: HttpRequestBuilder =
-    postPage(
-      "start create record process",
-      s"$tgpUrl/trader-goods-profiles/homepage",
-      Map.empty[String, String]
-    )
-
   def getCreatingAGoodsRecordPage: HttpRequestBuilder =
     getPage(
       "Creating a goods record",
@@ -166,7 +159,7 @@ object TgpRequests extends Configuration {
     getPage(
       "Trader reference",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/trader-reference"
+      s"$tgpUrl/trader-goods-profiles/create/trader-reference"
     )
 
   def postTraderReferencePage: HttpRequestBuilder = {
@@ -175,7 +168,7 @@ object TgpRequests extends Configuration {
     )
     postPage(
       "enter your Trader Reference",
-      s"$tgpUrl/trader-goods-profiles/create-record/trader-reference",
+      s"$tgpUrl/trader-goods-profiles/create/trader-reference",
       enterTraderReference
     )
   }
@@ -198,7 +191,7 @@ object TgpRequests extends Configuration {
     getPage(
       "Goods description",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/create-record/gods-description"
+      s"$tgpUrl/trader-goods-profiles/create-record/goods-description"
     )
 
   def postGoodsDescriptionPage: HttpRequestBuilder = {
@@ -216,16 +209,16 @@ object TgpRequests extends Configuration {
     getPage(
       "Country of origin",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/country-of-origin"
+      s"$tgpUrl/trader-goods-profiles/create-record/country-of-origin"
     )
 
   def postCountryOfOriginPage: HttpRequestBuilder = {
     val enterCountryOfOrigin = Map(
-      "value" -> "UK"
+      "value" -> "CN"
     )
     postPage(
       "enter the Country Of Origin",
-      s"$tgpUrl/trader-goods-profiles/country-of-origin",
+      s"$tgpUrl/trader-goods-profiles/create-record/country-of-origin",
       enterCountryOfOrigin
     )
   }
@@ -237,20 +230,20 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/create-record/commodity-code"
     )
 
-  def postCommodityCodePage(valid: Boolean): HttpRequestBuilder = {
-    val enterCommodityCode = Map(
-      if (valid) {
-        "value" -> "1234567890"
-      }
-      else
-        "value" -> "1234567891"
-    )
-    postPage(
-      "enter your Commodity Code",
-      s"$tgpUrl/trader-goods-profiles/create-record/commodity-code",
-      enterCommodityCode
-    )
-  }
+  def postCommodityCodePage(valid: Boolean): HttpRequestBuilder =
+    if (valid) {
+      postPage(
+        "enter your Commodity Code",
+        s"$tgpUrl/trader-goods-profiles/create-record/commodity-code",
+        Map("value" -> "0702000007")
+      )
+    } else {
+      postErrorPage(
+        "enter your Commodity Code",
+        s"$tgpUrl/trader-goods-profiles/create-record/commodity-code",
+        Map("value" -> "0702000001")
+      )
+    }
 
   def getCommodityCodeResultPage: HttpRequestBuilder =
     getPage(
@@ -278,6 +271,12 @@ object TgpRequests extends Configuration {
       "Check your answers page",
       s"$tgpUrl/trader-goods-profiles/create-record/cya-create-record",
       Map.empty[String, String]
+    )
+
+  def getCreateRecordSuccessPage: HttpRequestBuilder =
+    getPage(
+      "created a goods record",
+      s"$tgpUrl/trader-goods-profiles/create-record/create-record-success/b2fa315b-2d31-4629-90fc-a7b1a5119873"
     )
 
   def getAdviceStartPage: HttpRequestBuilder =
@@ -347,14 +346,6 @@ object TgpRequests extends Configuration {
   def getAdviceSuccessPage: HttpRequestBuilder =
     getPage(
       "Request for advice complete",
-      saveToken = true,
       s"$tgpUrl/trader-goods-profiles/advice/success"
-    )
-
-  def postAdviceSuccessPage: HttpRequestBuilder =
-    postPage(
-      "Request for advice complete",
-      s"$tgpUrl/trader-goods-profiles/advice/success",
-      Map.empty[String, String]
     )
 }
