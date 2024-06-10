@@ -23,8 +23,9 @@ import io.netty.handler.codec.http.HttpResponseStatus.{OK, SEE_OTHER}
 
 object AuthRequests extends Configuration {
 
-  private val authWizardUrl: String  = s"$authUrl/auth-login-stub/gg-sign-in"
-  private val redirectionUrl: String = "/trader-goods-profiles/profile-setup"
+  private val authWizardUrl: String   = s"$authUrl/auth-login-stub/gg-sign-in"
+  private val profileSetupUrl: String = "/trader-goods-profiles/profile-setup"
+  private val homepageUrl: String     = "/trader-goods-profiles/homepage"
 
   val getAuthWizardPage: HttpRequestBuilder =
     http("GET Navigate to /auth-login-stub/gg-sign-in")
@@ -32,10 +33,10 @@ object AuthRequests extends Configuration {
       .check(status.is(OK.code()))
       .check(regex("Authority Wizard"))
 
-  def postAuthWizardPage: HttpRequestBuilder =
+  def postAuthWizardPageProfileSetup: HttpRequestBuilder =
     http("POST Log in to auth")
       .post(authWizardUrl)
-      .formParam("redirectionUrl", redirectionUrl)
+      .formParam("redirectionUrl", profileSetupUrl)
       .formParam("credentialStrength", "strong")
       .formParam("authorityId", "")
       .formParam("confidenceLevel", "50")
@@ -46,6 +47,23 @@ object AuthRequests extends Configuration {
       .formParam("enrolment[0].taxIdentifier[0].value", "GB123456789123")
       .formParam("enrolment[0].state", "Activated")
       .check(status.is(SEE_OTHER.code()))
-      .check(header("Location").is(redirectionUrl))
+      .check(header("Location").is(profileSetupUrl))
+      .disableFollowRedirect
+
+  def postAuthWizardPageHome: HttpRequestBuilder =
+    http("POST Log in to auth")
+      .post(authWizardUrl)
+      .formParam("redirectionUrl", homepageUrl)
+      .formParam("credentialStrength", "strong")
+      .formParam("authorityId", "")
+      .formParam("confidenceLevel", "50")
+      .formParam("affinityGroup", "Individual")
+      .formParam("credentialRole", "User")
+      .formParam("enrolment[0].name", "HMRC-CUS-ORG")
+      .formParam("enrolment[0].taxIdentifier[0].name", "EORINumber")
+      .formParam("enrolment[0].taxIdentifier[0].value", "GB123456789123")
+      .formParam("enrolment[0].state", "Activated")
+      .check(status.is(SEE_OTHER.code()))
+      .check(header("Location").is(homepageUrl))
       .disableFollowRedirect
 }

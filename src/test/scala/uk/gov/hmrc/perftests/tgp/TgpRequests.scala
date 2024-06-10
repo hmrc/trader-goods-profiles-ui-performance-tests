@@ -17,7 +17,7 @@
 package uk.gov.hmrc.perftests.tgp
 
 import io.gatling.http.request.builder.HttpRequestBuilder
-import uk.gov.hmrc.perftests.tgp.Requests.{getPage, postPage}
+import uk.gov.hmrc.perftests.tgp.Requests.{getPage, postErrorPage, postPage}
 
 object TgpRequests extends Configuration {
 
@@ -121,14 +121,14 @@ object TgpRequests extends Configuration {
     )
   }
 
-  def getCheckYourAnswersPage: HttpRequestBuilder =
+  def getProfileSetupCYAPage: HttpRequestBuilder =
     getPage(
       "Check your answers",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/cya-nirms-niphls"
     )
 
-  def postCheckYourAnswersPage: HttpRequestBuilder =
+  def postProfileSetupCYAPage: HttpRequestBuilder =
     postPage(
       "Check your answers page",
       s"$tgpUrl/trader-goods-profiles/cya-nirms-niphls",
@@ -139,5 +139,213 @@ object TgpRequests extends Configuration {
     getPage(
       "Trader Goods Profile homepage",
       s"$tgpUrl/trader-goods-profiles/homepage"
+    )
+
+  def getCreatingAGoodsRecordPage: HttpRequestBuilder =
+    getPage(
+      "Creating a goods record",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/create-record-start"
+    )
+
+  def postCreatingAGoodsRecordPage: HttpRequestBuilder =
+    postPage(
+      "Create a goods record",
+      s"$tgpUrl/trader-goods-profiles/create-record/create-record-start",
+      Map.empty[String, String]
+    )
+
+  def getTraderReferencePage: HttpRequestBuilder =
+    getPage(
+      "Trader reference",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create/trader-reference"
+    )
+
+  def postTraderReferencePage: HttpRequestBuilder = {
+    val enterTraderReference = Map(
+      "value" -> "trader"
+    )
+    postPage(
+      "enter your Trader Reference",
+      s"$tgpUrl/trader-goods-profiles/create/trader-reference",
+      enterTraderReference
+    )
+  }
+
+  def getGoodsDescriptionQuestionPage: HttpRequestBuilder =
+    getPage(
+      "Goods description",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/goods-description-question"
+    )
+
+  def postGoodsDescriptionQuestionPage(answer: Boolean): HttpRequestBuilder =
+    postPage(
+      "Click Yes or No on Goods Description Question Page",
+      s"$tgpUrl/trader-goods-profiles/create-record/goods-description-question",
+      answer.toPayload
+    )
+
+  def getGoodsDescriptionPage: HttpRequestBuilder =
+    getPage(
+      "Goods description",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/goods-description"
+    )
+
+  def postGoodsDescriptionPage: HttpRequestBuilder = {
+    val enterGoodsDescription = Map(
+      "value" -> "Goods"
+    )
+    postPage(
+      "enter your Goods Description",
+      s"$tgpUrl/trader-goods-profiles/create-record/goods-description",
+      enterGoodsDescription
+    )
+  }
+
+  def getCountryOfOriginPage: HttpRequestBuilder =
+    getPage(
+      "Country of origin",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/country-of-origin"
+    )
+
+  def postCountryOfOriginPage: HttpRequestBuilder = {
+    val enterCountryOfOrigin = Map(
+      "value" -> "CN"
+    )
+    postPage(
+      "enter the Country Of Origin",
+      s"$tgpUrl/trader-goods-profiles/create-record/country-of-origin",
+      enterCountryOfOrigin
+    )
+  }
+
+  def getCommodityCodePage: HttpRequestBuilder =
+    getPage(
+      "Commodity code",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/commodity-code"
+    )
+
+  def postCommodityCodePage(valid: Boolean): HttpRequestBuilder =
+    if (valid) {
+      postPage(
+        "enter your Commodity Code",
+        s"$tgpUrl/trader-goods-profiles/create-record/commodity-code",
+        Map("value" -> "0702000007")
+      )
+    } else {
+      postErrorPage(
+        "enter your Commodity Code",
+        s"$tgpUrl/trader-goods-profiles/create-record/commodity-code",
+        Map("value" -> "0702000001")
+      )
+    }
+
+  def getCommodityCodeResultPage: HttpRequestBuilder =
+    getPage(
+      "Results for 0702000007",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/commodity-code-result"
+    )
+
+  def postCommodityCodeResultPage: HttpRequestBuilder =
+    postPage(
+      "Click Yes on Commodity Code Result Page",
+      s"$tgpUrl/trader-goods-profiles/create-record/commodity-code-result",
+      true.toPayload
+    )
+
+  def getCreateRecordCYAPage: HttpRequestBuilder =
+    getPage(
+      "Check your answers",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/create-record/cya-create-record"
+    )
+
+  def postCreateRecordCYAPage: HttpRequestBuilder =
+    postPage(
+      "Check your answers page",
+      s"$tgpUrl/trader-goods-profiles/create-record/cya-create-record",
+      Map.empty[String, String]
+    )
+
+  def getCreateRecordSuccessPage: HttpRequestBuilder =
+    getPage(
+      "created a goods record",
+      s"$tgpUrl/trader-goods-profiles/create-record/create-record-success/b2fa315b-2d31-4629-90fc-a7b1a5119873"
+    )
+
+  def getAdviceStartPage: HttpRequestBuilder =
+    getPage(
+      "Asking HMRC for advice",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/advice-start"
+    )
+
+  def postAdviceStartPage: HttpRequestBuilder =
+    postPage(
+      "Asking HMRC for advice",
+      s"$tgpUrl/trader-goods-profiles/advice-start",
+      Map.empty[String, String]
+    )
+
+  def getAskNamePage: HttpRequestBuilder =
+    getPage(
+      "What is your name?",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/advice/name"
+    )
+
+  def postAskNamePage: HttpRequestBuilder = {
+    val enterName = Map(
+      "value" -> "TestFirstName TestLastName"
+    )
+    postPage(
+      "What is your name?",
+      s"$tgpUrl/trader-goods-profiles/advice/name",
+      enterName
+    )
+  }
+
+  def getAskEmailPage: HttpRequestBuilder =
+    getPage(
+      "What is your email address?",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/advice/email"
+    )
+
+  def postAskEmailPage: HttpRequestBuilder = {
+    val enterEmail = Map(
+      "value" -> "Test@test.com"
+    )
+    postPage(
+      "What is your email address?",
+      s"$tgpUrl/trader-goods-profiles/advice/email",
+      enterEmail
+    )
+  }
+
+  def getAdviceCYAPage: HttpRequestBuilder =
+    getPage(
+      "Check your answers before sending your request for advice",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/advice/check-your-answers"
+    )
+
+  def postAdviceCYAPage: HttpRequestBuilder =
+    postPage(
+      "Advice Check your answers",
+      s"$tgpUrl/trader-goods-profiles/advice/check-your-answers",
+      Map.empty[String, String]
+    )
+
+  def getAdviceSuccessPage: HttpRequestBuilder =
+    getPage(
+      "Request for advice complete",
+      s"$tgpUrl/trader-goods-profiles/advice/success"
     )
 }
