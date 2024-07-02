@@ -212,16 +212,12 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/create-record/country-of-origin"
     )
 
-  def postCountryOfOriginPage: HttpRequestBuilder = {
-    val enterCountryOfOrigin = Map(
-      "value" -> "CN"
-    )
+  def postCountryOfOriginPage(countryCode: String): HttpRequestBuilder =
     postPage(
       "enter the Country Of Origin",
       s"$tgpUrl/trader-goods-profiles/create-record/country-of-origin",
-      enterCountryOfOrigin
+      Map("value" -> countryCode)
     )
-  }
 
   def getCommodityCodePage: HttpRequestBuilder =
     getPage(
@@ -230,24 +226,24 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/create-record/commodity-code"
     )
 
-  def postCommodityCodePage(valid: Boolean): HttpRequestBuilder =
+  def postCommodityCodePage(valid: Boolean, commodityCode: String): HttpRequestBuilder =
     if (valid) {
       postPage(
         "enter your Commodity Code",
         s"$tgpUrl/trader-goods-profiles/create-record/commodity-code",
-        Map("value" -> "0702000007")
+        Map("value" -> commodityCode)
       )
     } else {
       postErrorPage(
         "enter your Commodity Code",
         s"$tgpUrl/trader-goods-profiles/create-record/commodity-code",
-        Map("value" -> "0702000001")
+        Map("value" -> commodityCode)
       )
     }
 
-  def getCommodityCodeResultPage: HttpRequestBuilder =
+  def getCommodityCodeResultPage(commodityCode: String): HttpRequestBuilder =
     getPage(
-      "Results for 0702000007",
+      "Results for " + commodityCode,
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/create-record/commodity-code-result"
     )
@@ -277,6 +273,56 @@ object TgpRequests extends Configuration {
     getPage(
       "created a goods record",
       s"$tgpUrl/trader-goods-profiles/create-record/create-record-success/b2fa315b-2d31-4629-90fc-a7b1a5119873"
+    )
+
+  def getCategorisationStartPage: HttpRequestBuilder =
+    getPage(
+      "Categorisation",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/update/b2fa315b-2d31-4629-90fc-a7b1a5119873/categorisation-start"
+    )
+
+  def postCategorisationStartPage: HttpRequestBuilder =
+    postPage(
+      "Categorisation",
+      s"$tgpUrl/trader-goods-profiles/update/b2fa315b-2d31-4629-90fc-a7b1a5119873/categorisation-start",
+      Map.empty[String, String]
+    )
+
+  def getCategoryAssessmentPage(categoryNumber: String): HttpRequestBuilder =
+    getPage(
+      "Category assessment " + categoryNumber,
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/update/b2fa315b-2d31-4629-90fc-a7b1a5119873/category-assessment/" + (Integer
+        .parseInt(categoryNumber.trim) - 1)
+    )
+
+  def postCategoryAssessmentPage(categoryNumber: String, conditionValue: String): HttpRequestBuilder =
+    postPage(
+      "Category assessment " + categoryNumber,
+      s"$tgpUrl/trader-goods-profiles/update/b2fa315b-2d31-4629-90fc-a7b1a5119873/category-assessment/" + (Integer
+        .parseInt(categoryNumber.trim) - 1),
+      Map("value" -> conditionValue)
+    )
+
+  def getCyaCategorisationPage: HttpRequestBuilder =
+    getPage(
+      "Check your answers",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/update/b2fa315b-2d31-4629-90fc-a7b1a5119873/cya-categorisation"
+    )
+
+  def postCyaCategorisationPage: HttpRequestBuilder =
+    postPage(
+      "Check your answers",
+      s"$tgpUrl/trader-goods-profiles/update/b2fa315b-2d31-4629-90fc-a7b1a5119873/cya-categorisation",
+      Map.empty[String, String]
+    )
+
+  def getCategoryResultPage(category: String): HttpRequestBuilder =
+    getPage(
+      "Categorisation complete",
+      s"$tgpUrl/trader-goods-profiles/categorisation-result/b2fa315b-2d31-4629-90fc-a7b1a5119873/" + category
     )
 
   def getAdviceStartPage: HttpRequestBuilder =

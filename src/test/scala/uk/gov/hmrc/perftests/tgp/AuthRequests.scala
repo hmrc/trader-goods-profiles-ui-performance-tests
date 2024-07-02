@@ -50,7 +50,7 @@ object AuthRequests extends Configuration {
       .check(header("Location").is(profileSetupUrl))
       .disableFollowRedirect
 
-  def postAuthWizardPageHome: HttpRequestBuilder =
+  def postAuthWizardPageHome(EoriNumber: String): HttpRequestBuilder =
     http("POST Log in to auth")
       .post(authWizardUrl)
       .formParam("redirectionUrl", homepageUrl)
@@ -61,7 +61,7 @@ object AuthRequests extends Configuration {
       .formParam("credentialRole", "User")
       .formParam("enrolment[0].name", "HMRC-CUS-ORG")
       .formParam("enrolment[0].taxIdentifier[0].name", "EORINumber")
-      .formParam("enrolment[0].taxIdentifier[0].value", "GB123456789123")
+      .formParam("enrolment[0].taxIdentifier[0].value", EoriNumber)
       .formParam("enrolment[0].state", "Activated")
       .check(status.is(SEE_OTHER.code()))
       .check(header("Location").is(homepageUrl))
