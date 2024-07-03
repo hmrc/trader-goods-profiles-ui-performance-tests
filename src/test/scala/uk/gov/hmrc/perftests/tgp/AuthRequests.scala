@@ -24,7 +24,7 @@ import io.netty.handler.codec.http.HttpResponseStatus.{OK, SEE_OTHER}
 object AuthRequests extends Configuration {
 
   private val authWizardUrl: String   = s"$authUrl/auth-login-stub/gg-sign-in"
-  private val profileSetupUrl: String = "/trader-goods-profiles/profile-setup"
+  private val profileSetupUrl: String = "/trader-goods-profiles/create-profile/start"
   private val homepageUrl: String     = "/trader-goods-profiles/homepage"
 
   val getAuthWizardPage: HttpRequestBuilder =
