@@ -19,7 +19,7 @@ package uk.gov.hmrc.perftests.tgp
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
-import io.netty.handler.codec.http.HttpResponseStatus.{OK, SEE_OTHER, BAD_REQUEST}
+import io.netty.handler.codec.http.HttpResponseStatus.{BAD_REQUEST, OK, SEE_OTHER}
 
 object Requests {
 
@@ -61,6 +61,7 @@ object Requests {
       .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
       .check(status.is(SEE_OTHER.code()))
       .check(currentLocation.is(currentPage))
+      .check(path)
       .disableFollowRedirect
 
   def postErrorPage(

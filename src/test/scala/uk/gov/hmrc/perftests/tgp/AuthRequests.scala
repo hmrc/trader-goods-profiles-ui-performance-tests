@@ -21,11 +21,17 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import io.netty.handler.codec.http.HttpResponseStatus.{OK, SEE_OTHER}
 
+import java.util.concurrent.atomic.AtomicInteger
+
 object AuthRequests extends Configuration {
 
   private val authWizardUrl: String   = s"$authUrl/auth-login-stub/gg-sign-in"
   private val profileSetupUrl: String = "/trader-goods-profiles/create-profile/start"
   private val homepageUrl: String     = "/trader-goods-profiles/homepage"
+
+  private val Counter = new AtomicInteger(123456789)
+  val nextId          = Counter.incrementAndGet()
+  val eori            = nextEori(nextId)
 
   val getAuthWizardPage: HttpRequestBuilder =
     http("GET Navigate to /auth-login-stub/gg-sign-in")
@@ -44,7 +50,7 @@ object AuthRequests extends Configuration {
       .formParam("credentialRole", "User")
       .formParam("enrolment[0].name", "HMRC-CUS-ORG")
       .formParam("enrolment[0].taxIdentifier[0].name", "EORINumber")
-      .formParam("enrolment[0].taxIdentifier[0].value", "GB123456789123")
+      .formParam("enrolment[0].taxIdentifier[0].value", eori)
       .formParam("enrolment[0].state", "Activated")
       .check(status.is(SEE_OTHER.code()))
       .check(header("Location").is(profileSetupUrl))
@@ -66,4 +72,7 @@ object AuthRequests extends Configuration {
       .check(status.is(SEE_OTHER.code()))
       .check(header("Location").is(homepageUrl))
       .disableFollowRedirect
+
+  private def nextEori(counter: Int): String =
+    f"GB$counter%012d"
 }
