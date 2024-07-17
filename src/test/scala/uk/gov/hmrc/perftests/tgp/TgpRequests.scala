@@ -17,11 +17,10 @@
 package uk.gov.hmrc.perftests.tgp
 
 import io.gatling.http.request.builder.HttpRequestBuilder
-import org.mongodb.scala.model.{Filters, Projections}
-import org.mongodb.scala.{Document, MongoClient, Observable, Observer}
-import uk.gov.hmrc.perftests.tgp.Requests.{getPage, postErrorPage, postPage}
+import org.mongodb.scala.MongoClient
+import uk.gov.hmrc.perftests.tgp.AuthRequests.rand
+import uk.gov.hmrc.perftests.tgp.Requests._
 
-import java.util.UUID
 import scala.concurrent.Await
 import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
@@ -29,7 +28,8 @@ import scala.language.postfixOps
 object TgpRequests extends Configuration {
 
   private lazy val mongoClient: MongoClient = MongoClient()
-  var recordId                              = ""
+  val recordId                              = "4e889d8f-31ae-41af-90fd-db99c72460eb"
+  def traderReference: String               = "Trader " + rand.nextInt()
   def dropCollections(): Unit               = {
     println("============================Dropping Collection")
 
@@ -44,30 +44,6 @@ object TgpRequests extends Configuration {
     dropCollection("trader-goods-profiles-data-store", "goodsItemRecords")
   }
 
-//  private def getRecordId(eoriNum: String): String = {
-//    val Collection                       = mongoClient.getDatabase("trader-goods-profiles-data-store").getCollection("goodsItemRecords")
-//    val observable: Observable[Document] = Collection
-//      .find(Filters.equal("eori", eoriNum))
-//      .projection(Projections.include("_id"))
-//      .first()
-//    observable.subscribe(new Observer[Document] {
-//      override def onNext(result: Document): Unit = {
-//        val o = result.toBsonDocument()
-//        recordId = o.get("_id").asString().getValue
-//        println(s"Found document with _id: $recordId")
-//        // String.valueOf(result.getObjectId("_id")
-//      }
-//
-//      override def onError(e: Throwable): Unit =
-//        println(s"Failed to fetch document: ${e.getMessage}")
-//
-//      override def onComplete(): Unit = {
-//        println("Completed fetching document")
-//        mongoClient.close()
-//      }
-//    })
-//    recordId
-//  }
   implicit class BooleanOps(b: Boolean) {
     def toPayload: Map[String, String] = if (b) Map("value" -> "true") else Map("value" -> "false")
   }
@@ -81,7 +57,7 @@ object TgpRequests extends Configuration {
 
   def postTGPProfilePage: HttpRequestBuilder =
     postPage(
-      "TGP Profile Page",
+      "Create Profile Start Page",
       s"$tgpUrl/trader-goods-profiles/create-profile/start",
       Map.empty[String, String]
     )
@@ -210,14 +186,11 @@ object TgpRequests extends Configuration {
     )
 
   def postTraderReferencePage: HttpRequestBuilder = {
-    val traderReference      = "Trader " + UUID.randomUUID().toString
-    val enterTraderReference = Map(
-      "value" -> traderReference
-    )
+    println("TraderReference$$$$$:" + traderReference)
     postPage(
       "enter your Trader Reference",
       s"$tgpUrl/trader-goods-profiles/create-record/trader-reference",
-      enterTraderReference
+      Map("value" -> traderReference)
     )
   }
 
@@ -311,36 +284,30 @@ object TgpRequests extends Configuration {
     )
 
   def postCreateRecordCYAPage: HttpRequestBuilder =
-    postPage(
+    postPageAndExtractDraftId(
       "Check your answers page",
       s"$tgpUrl/trader-goods-profiles/create-record/check-your-answers",
+      "success",
       Map.empty[String, String]
     )
 
-  def getCreateRecordSuccessPage: HttpRequestBuilder = {
-    Thread.sleep(10000)
-    val recId = getRecordId("GB123456789098")
-//    println("recordID: " + recId)
+  def getCreateRecordSuccessPage: HttpRequestBuilder =
     getPage(
       "created a goods record",
-      s"$tgpUrl/trader-goods-profiles/create-record/" + recordId + "/success"
+      s"$tgpUrl/trader-goods-profiles/create-record/$${draftId}/success"
     )
-  }
 
-  def getCategorisationStartPage: HttpRequestBuilder = {
-    print("this is the first recordId: " + recordId)
-
+  def getCategorisationStartPage: HttpRequestBuilder =
     getPage(
       "Categorisation",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/start"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/start"
     )
-  }
 
   def postCategorisationStartPage: HttpRequestBuilder =
     postPage(
       "Categorisation",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/start",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/start",
       Map.empty[String, String]
     )
 
@@ -348,14 +315,14 @@ object TgpRequests extends Configuration {
     getPage(
       "Category assessment " + categoryNumber,
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/category-assessment/" + (Integer
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/category-assessment/" + (Integer
         .parseInt(categoryNumber.trim) - 1)
     )
 
   def postCategoryAssessmentPage(categoryNumber: String, conditionValue: String): HttpRequestBuilder =
     postPage(
       "Category assessment " + categoryNumber,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/category-assessment/" + (Integer
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/category-assessment/" + (Integer
         .parseInt(categoryNumber.trim) - 1),
       Map("value" -> conditionValue)
     )
@@ -364,13 +331,13 @@ object TgpRequests extends Configuration {
     getPage(
       "You need to enter a longer commodity code",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/longer-commodity-code"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/longer-commodity-code"
     )
 
   def postLongerCommodityCodePage(longerCode: String): HttpRequestBuilder =
     postPage(
       "Enter Longer Commodity Code",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/longer-commodity-code",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/longer-commodity-code",
       Map("value" -> longerCode)
     )
 
@@ -378,13 +345,13 @@ object TgpRequests extends Configuration {
     getPage(
       "Results for " + longerCommodityCode,
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/longer-commodity-code-result"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/longer-commodity-code-result"
     )
 
   def postLongerCommodityCodeResultPage: HttpRequestBuilder =
     postPage(
       "Click Yes on Longer Commodity Code Result Page",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/longer-commodity-code-result",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/longer-commodity-code-result",
       true.toPayload
     )
 
@@ -392,27 +359,27 @@ object TgpRequests extends Configuration {
     getPage(
       "Supplementary unit",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/supplementary-unit-question"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/supplementary-unit-question"
     )
 
   def postSupplementaryQuestionPage: HttpRequestBuilder =
     postPage(
       "Click Yes on Supplementary unit Page",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/supplementary-unit-question",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/supplementary-unit-question",
       true.toPayload
     )
 
   def getSupplementaryUnitPage: HttpRequestBuilder =
     getPage(
-      "What is the good's supplementary unit?",
+      "",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/supplementary-unit-question"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/supplementary-unit-amount"
     )
 
   def postSupplementaryUnitPage(Unit: String): HttpRequestBuilder =
     postPage(
       "Enter Supplementary unit",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/supplementary-unit-question",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/supplementary-unit-amount",
       Map("value" -> Unit)
     )
 
@@ -420,20 +387,20 @@ object TgpRequests extends Configuration {
     getPage(
       "Check your answers",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/check-your-answers"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/check-your-answers"
     )
 
   def postCyaCategorisationPage: HttpRequestBuilder =
     postPage(
       "Check your answers",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/check-your-answers",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/check-your-answers",
       Map.empty[String, String]
     )
 
   def getCategoryResultPage(category: String): HttpRequestBuilder =
     getPage(
       "Categorisation complete",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/categorisation/result/" + category
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/categorisation/result/" + category
     )
 
   def getPreviousMovementRecordsPage: HttpRequestBuilder  =
@@ -452,34 +419,26 @@ object TgpRequests extends Configuration {
     getPage(
       "Goods profile",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/goods-profile?page=1"
-    )
-
-  def postGoodsProfilePage: HttpRequestBuilder =
-    postPage(
-      "Goods profile",
-      s"$tgpUrl/trader-goods-profiles/goods-profile?page=1",
-      Map.empty[String, String]
+      s"""$tgpUrl/trader-goods-profiles/goods-profile?page=1"""
     )
 
   def getGoodsRecordPage: HttpRequestBuilder =
     getPage(
       "Goods record",
-      saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/goods-record/" + recordId + ""
+      s"$tgpUrl/trader-goods-profiles/goods-record/$${draftId}"
     )
 
   def getAdviceStartPage: HttpRequestBuilder =
     getPage(
       "Asking HMRC for advice",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/create-advice/start"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/create-advice/start"
     )
 
   def postAdviceStartPage: HttpRequestBuilder =
     postPage(
       "Asking HMRC for advice",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/create-advice/start",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/create-advice/start",
       Map.empty[String, String]
     )
 
@@ -487,7 +446,7 @@ object TgpRequests extends Configuration {
     getPage(
       "What is your name?",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/create-advice/name"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/create-advice/name"
     )
 
   def postAskNamePage: HttpRequestBuilder = {
@@ -496,7 +455,7 @@ object TgpRequests extends Configuration {
     )
     postPage(
       "What is your name?",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/create-advice/name",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/create-advice/name",
       enterName
     )
   }
@@ -505,7 +464,7 @@ object TgpRequests extends Configuration {
     getPage(
       "What is your email address?",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/create-advice/email"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/create-advice/email"
     )
 
   def postAskEmailPage: HttpRequestBuilder = {
@@ -514,7 +473,7 @@ object TgpRequests extends Configuration {
     )
     postPage(
       "What is your email address?",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/create-advice/email",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/create-advice/email",
       enterEmail
     )
   }
@@ -523,19 +482,19 @@ object TgpRequests extends Configuration {
     getPage(
       "Check your answers before sending your request for advice",
       saveToken = true,
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/create-advice/check-your-answers"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/create-advice/check-your-answers"
     )
 
   def postAdviceCYAPage: HttpRequestBuilder =
     postPage(
       "Advice Check your answers",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/create-advice/check-your-answers",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/create-advice/check-your-answers",
       Map.empty[String, String]
     )
 
   def getAdviceSuccessPage: HttpRequestBuilder =
     getPage(
       "Request for advice complete",
-      s"$tgpUrl/trader-goods-profiles/update-record/" + recordId + "/create-advice/success"
+      s"$tgpUrl/trader-goods-profiles/update-record/$${draftId}/create-advice/success"
     )
 }

@@ -23,7 +23,7 @@ import uk.gov.hmrc.perftests.tgp.TgpRequests._
 
 class TgpSimulation extends PerformanceTestRunner {
 
-  val profileSetupJourneyWithUKIMSNIRMSAndNIPHL: Seq[HttpRequestBuilder] =
+  def profileSetupJourneyWithUKIMSNIRMSAndNIPHL: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
       postAuthWizardPageProfileSetup,
@@ -65,32 +65,32 @@ class TgpSimulation extends PerformanceTestRunner {
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
       postCreateRecordCYAPage,
-//      getCreateRecordSuccessPage,
-//      getCategorisationStartPage,
-//      postCategorisationStartPage,
-//      getCategoryAssessmentPage("1"),
-//      postCategoryAssessmentPage("1", "Y997"),
-//      getCategoryAssessmentPage("2"),
-//      postCategoryAssessmentPage("2", "Y984"),
-//      getCategoryAssessmentPage("3"),
-//      postCategoryAssessmentPage("3", "none"),
-//      getLongerCommodityCodePage,
-//      postLongerCommodityCodePage("99"),
-//      getLongerCommodityCodeResultPage("1704909900"),
-//      postLongerCommodityCodeResultPage,
-//      getSupplementaryQuestionPage,
-//      postSupplementaryQuestionPage,
-//      getSupplementaryUnitPage,
-//      postSupplementaryUnitPage("11"),
-//      getCyaCategorisationPage,
-//      postCyaCategorisationPage,
-//      getCategoryResultPage("category-2")
+      getCreateRecordSuccessPage,
+      getCategorisationStartPage,
+      postCategorisationStartPage,
+      getCategoryAssessmentPage("1"),
+      postCategoryAssessmentPage("1", "Y997"),
+      getCategoryAssessmentPage("2"),
+      postCategoryAssessmentPage("2", "Y984"),
+      getCategoryAssessmentPage("3"),
+      postCategoryAssessmentPage("3", "none"),
+      getLongerCommodityCodePage,
+      postLongerCommodityCodePage("99"),
+      getLongerCommodityCodeResultPage("1704909900"),
+      postLongerCommodityCodeResultPage,
+      getSupplementaryQuestionPage,
+      postSupplementaryQuestionPage,
+      getSupplementaryUnitPage,
+      postSupplementaryUnitPage("11"),
+      getCyaCategorisationPage,
+      postCyaCategorisationPage,
+      getCategoryResultPage("category-2")
     )
 
   val createRecordCategory3Goods: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageHome("GB123456789098"),
+      postAuthWizardPageHome("GB123456789123"),
       getHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
@@ -101,8 +101,8 @@ class TgpSimulation extends PerformanceTestRunner {
       getCountryOfOriginPage,
       postCountryOfOriginPage("IQ"),
       getCommodityCodePage,
-      postCommodityCodePage(true, "9301900000"),
-      getCommodityCodeResultPage("9301900000"),
+      postCommodityCodePage(true, "3602000090"),
+      getCommodityCodeResultPage("3602000090"),
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
       postCreateRecordCYAPage,
@@ -110,9 +110,9 @@ class TgpSimulation extends PerformanceTestRunner {
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
-      postCategoryAssessmentPage("1", "8392"),
+      postCategoryAssessmentPage("1", "Y949"),
       getCategoryAssessmentPage("2"),
-      postCategoryAssessmentPage("2", "8440"),
+      postCategoryAssessmentPage("2", "Y920"),
       getCategoryAssessmentPage("3"),
       postCategoryAssessmentPage("3", "Y957"),
       getCategoryAssessmentPage("4"),
@@ -121,6 +121,10 @@ class TgpSimulation extends PerformanceTestRunner {
       postCategoryAssessmentPage("5", "Y997"),
       getCategoryAssessmentPage("6"),
       postCategoryAssessmentPage("6", "Y984"),
+      getCategoryAssessmentPage("7"),
+      postCategoryAssessmentPage("7", "Y949"),
+      getCategoryAssessmentPage("8"),
+      postCategoryAssessmentPage("8", "Y923"),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
       getCategoryResultPage("standard")
@@ -129,7 +133,7 @@ class TgpSimulation extends PerformanceTestRunner {
   val createRecordCategory1Goods: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageHome("GB123456789098"),
+      postAuthWizardPageHome("GB123456789123"),
       getHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
@@ -154,18 +158,27 @@ class TgpSimulation extends PerformanceTestRunner {
       postCategoryAssessmentPage("2", "none"),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
-      getCategoryResultPage("category-1")
+      getCategoryResultPage("category-1"),
+      getHomePage,
+      getGoodsProfilePage,
+      getGoodsRecordPage,
+      getAdviceStartPage,
+      postAdviceStartPage,
+      getAskNamePage,
+      postAskNamePage,
+      getAskEmailPage,
+      postAskEmailPage,
+      getAdviceCYAPage,
+      postAdviceCYAPage,
+      getAdviceSuccessPage
     )
 
   val createAdviceJourney: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageHome("GB123456789097"),
+      postAuthWizardPageHome("GB123456789123"),
       getHomePage,
-      getPreviousMovementRecordsPage,
-//      postPreviousMovementRecordsPage,
       getGoodsProfilePage,
-      postGoodsProfilePage,
       getGoodsRecordPage,
       getAdviceStartPage,
       postAdviceStartPage,
@@ -193,11 +206,11 @@ class TgpSimulation extends PerformanceTestRunner {
   setup("CreateAdviceJourney", "Create Advice Journey")
     .withRequests(createAdviceJourney: _*)
 
-//  before {
-//    dropCollections()
-//  }
+  before {
+    dropCollections()
+  }
   runSimulation()
-//  after {
-//    dropCollections()
-//  }
+  after {
+    dropCollections()
+  }
 }

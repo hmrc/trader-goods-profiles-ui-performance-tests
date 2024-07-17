@@ -21,17 +21,15 @@ import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import io.netty.handler.codec.http.HttpResponseStatus.{OK, SEE_OTHER}
 
-import java.util.concurrent.atomic.AtomicInteger
-
 object AuthRequests extends Configuration {
 
   private val authWizardUrl: String   = s"$authUrl/auth-login-stub/gg-sign-in"
   private val profileSetupUrl: String = "/trader-goods-profiles/create-profile/start"
   private val homepageUrl: String     = "/trader-goods-profiles/homepage"
+  val rand                            = new scala.util.Random
 
-  private val Counter = new AtomicInteger(123456789)
-  val nextId          = Counter.incrementAndGet()
-  val eori            = nextEori(nextId)
+  def counter = rand.between(100000000000L, 999999999999L)
+  def eori    = nextEori(counter)
 
   val getAuthWizardPage: HttpRequestBuilder =
     http("GET Navigate to /auth-login-stub/gg-sign-in")
@@ -73,6 +71,6 @@ object AuthRequests extends Configuration {
       .check(header("Location").is(homepageUrl))
       .disableFollowRedirect
 
-  private def nextEori(counter: Int): String =
+  private def nextEori(counter: Long): String =
     f"GB$counter%012d"
 }
