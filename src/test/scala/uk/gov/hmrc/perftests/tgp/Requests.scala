@@ -19,7 +19,7 @@ package uk.gov.hmrc.perftests.tgp
 import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
-import io.netty.handler.codec.http.HttpResponseStatus.{OK, SEE_OTHER, BAD_REQUEST}
+import io.netty.handler.codec.http.HttpResponseStatus.{BAD_REQUEST, OK, SEE_OTHER}
 
 object Requests {
 
@@ -52,23 +52,46 @@ object Requests {
     getPage(stepName, saveToken = false, url, pageContent = None)
 
   def postPage(
-    stepName: String,
+    pageName: String,
     currentPage: String,
     payload: Map[String, String]
   ): HttpRequestBuilder =
-    http("POST " + stepName)
+    http("POST " + pageName)
       .post(currentPage)
       .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
       .check(status.is(SEE_OTHER.code()))
       .check(currentLocation.is(currentPage))
       .disableFollowRedirect
 
+  def postPageAndExtractRecordId(
+    pageName: String,
+    currentPage: String,
+    nextPage: String,
+    payload: Map[String, String]
+  ): HttpRequestBuilder = {
+
+    val extractRecordId: String => String = { (s: String) =>
+      s
+        .replace("/trader-goods-profiles/create-record/", "")
+        .replace(s"/$nextPage", "")
+    }
+
+    http("POST " + pageName)
+      .post(currentPage)
+      .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
+      .check(status.is(SEE_OTHER.code()))
+      .check(
+        header("location")
+          .transform(s => extractRecordId(s))
+          .saveAs("recordId")
+      )
+  }
   def postErrorPage(
-    stepName: String,
+    pageName: String,
     currentPage: String,
     payload: Map[String, String]
   ): HttpRequestBuilder =
-    http("POST " + stepName)
+    http("POST " + pageName)
       .post(currentPage)
       .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
       .check(status.is(BAD_REQUEST.code()))

@@ -26,6 +26,10 @@ object AuthRequests extends Configuration {
   private val authWizardUrl: String   = s"$authUrl/auth-login-stub/gg-sign-in"
   private val profileSetupUrl: String = "/trader-goods-profiles/create-profile/start"
   private val homepageUrl: String     = "/trader-goods-profiles/homepage"
+  val rand                            = new scala.util.Random
+
+  def counter = rand.between(100000000000L, 999999999999L)
+  def eori    = nextEori(counter)
 
   val getAuthWizardPage: HttpRequestBuilder =
     http("GET Navigate to /auth-login-stub/gg-sign-in")
@@ -44,7 +48,7 @@ object AuthRequests extends Configuration {
       .formParam("credentialRole", "User")
       .formParam("enrolment[0].name", "HMRC-CUS-ORG")
       .formParam("enrolment[0].taxIdentifier[0].name", "EORINumber")
-      .formParam("enrolment[0].taxIdentifier[0].value", "GB123456789123")
+      .formParam("enrolment[0].taxIdentifier[0].value", eori)
       .formParam("enrolment[0].state", "Activated")
       .check(status.is(SEE_OTHER.code()))
       .check(header("Location").is(profileSetupUrl))
@@ -66,4 +70,7 @@ object AuthRequests extends Configuration {
       .check(status.is(SEE_OTHER.code()))
       .check(header("Location").is(homepageUrl))
       .disableFollowRedirect
+
+  private def nextEori(counter: Long): String =
+    f"GB$counter%012d"
 }
