@@ -52,46 +52,46 @@ object Requests {
     getPage(stepName, saveToken = false, url, pageContent = None)
 
   def postPage(
-    stepName: String,
+    pageName: String,
     currentPage: String,
     payload: Map[String, String]
   ): HttpRequestBuilder =
-    http("POST " + stepName)
+    http("POST " + pageName)
       .post(currentPage)
       .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
       .check(status.is(SEE_OTHER.code()))
       .check(currentLocation.is(currentPage))
       .disableFollowRedirect
 
-  def postPageAndExtractDraftId(
-    stepName: String,
+  def postPageAndExtractRecordId(
+    pageName: String,
     currentPage: String,
     nextPage: String,
     payload: Map[String, String]
   ): HttpRequestBuilder = {
 
-    val extractDraftId: String => String = { (s: String) =>
+    val extractRecordId: String => String = { (s: String) =>
       s
         .replace("/trader-goods-profiles/create-record/", "")
         .replace(s"/$nextPage", "")
     }
 
-    http("POST " + stepName)
+    http("POST " + pageName)
       .post(currentPage)
       .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
       .check(status.is(SEE_OTHER.code()))
       .check(
         header("location")
-          .transform(s => extractDraftId(s))
-          .saveAs("draftId")
+          .transform(s => extractRecordId(s))
+          .saveAs("recordId")
       )
   }
   def postErrorPage(
-    stepName: String,
+    pageName: String,
     currentPage: String,
     payload: Map[String, String]
   ): HttpRequestBuilder =
-    http("POST " + stepName)
+    http("POST " + pageName)
       .post(currentPage)
       .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
       .check(status.is(BAD_REQUEST.code()))

@@ -173,25 +173,7 @@ class TgpSimulation extends PerformanceTestRunner {
       getAdviceSuccessPage
     )
 
-  val createAdviceJourney: Seq[HttpRequestBuilder] =
-    Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("GB123456789123"),
-      getHomePage,
-      getGoodsProfilePage,
-      getGoodsRecordPage,
-      getAdviceStartPage,
-      postAdviceStartPage,
-      getAskNamePage,
-      postAskNamePage,
-      getAskEmailPage,
-      postAskEmailPage,
-      getAdviceCYAPage,
-      postAdviceCYAPage,
-      getAdviceSuccessPage
-    )
-
-  setup("CreateProfile", "Profile Setup Journey With UKIMS, NIRMS And NIPHL")
+  setup("CreateTGPProfile", "TGP Profile Setup Journey With UKIMS, NIRMS And NIPHL")
     .withRequests(profileSetupJourneyWithUKIMSNIRMSAndNIPHL: _*)
 
   setup("Category2GoodsJourney", "Create Record, Category 2 With Longer Commodity Code and Supplementary Unit")
@@ -200,17 +182,14 @@ class TgpSimulation extends PerformanceTestRunner {
   setup("Category3GoodsJourney", "Create Record, Category 3 Goods Journey")
     .withRequests(createRecordCategory3Goods: _*)
 
-  setup("Category1GoodsJourney", "Create Record, Category 1 Goods Journey")
+  setup("Category1GoodsRequestAdviceJourney", "Create Record, Category 1 Goods Journey and Request Advice Journey")
     .withRequests(createRecordCategory1Goods: _*)
 
-  setup("CreateAdviceJourney", "Create Advice Journey")
-    .withRequests(createAdviceJourney: _*)
-
-  before {
+  /*before {
     dropCollections()
-  }
+  }*/
   runSimulation()
-  after {
+  /*after {
     dropCollections()
-  }
+  }*/
 }
