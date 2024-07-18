@@ -186,11 +186,11 @@ class TgpSimulation extends PerformanceTestRunner {
   setup("Category1GoodsRequestAdviceJourney", "Create Record, Category 1 Goods Journey and Request Advice Journey")
     .withRequests(createRecordCategory1Goods: _*)
 
-//  before {
-//    dropCollections()
-//  }
+  before {
+    dropCollections()
+  }
   runSimulation()
-//  after {
-//    dropCollections()
-//  }
+  after {
+    dropCollections()
+  }
 }

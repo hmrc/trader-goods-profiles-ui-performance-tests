@@ -23,8 +23,11 @@ import scala.concurrent.duration.DurationInt
 import scala.language.postfixOps
 
 trait DropDatabase {
-
-  private lazy val mongoClient: MongoClient = MongoClient()
+  private val stagingDbUrl =
+    "mongodb://protected-mongo-eu-west-2a-1:27017,protected-mongo-eu-west-2b-1:27017,protected-mongo-eu-west-2c-1:27017/trader-goods-profiles-data-store?ssl=true"
+  //Uncomment the localDbUrl to run locally
+  //  private val localDbUrl                    = "mongodb://localhost:27017/trader-goods-profiles-data-store"
+  private lazy val mongoClient: MongoClient = MongoClient(stagingDbUrl)
 
   def dropCollections(): Unit = {
     println("============================Dropping Collection")
