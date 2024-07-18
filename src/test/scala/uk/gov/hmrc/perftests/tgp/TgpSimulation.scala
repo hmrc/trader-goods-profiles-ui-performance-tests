@@ -22,21 +22,22 @@ import uk.gov.hmrc.perftests.tgp.AuthRequests.{getAuthWizardPage, postAuthWizard
 import uk.gov.hmrc.perftests.tgp.TgpRequests._
 
 class TgpSimulation extends PerformanceTestRunner {
-
-  def profileSetupJourneyWithUKIMSNIRMSAndNIPHL: Seq[HttpRequestBuilder] =
+  val Yes                                                                = true
+  val No                                                                 = false
+  val profileSetupJourneyWithUKIMSNIRMSAndNIPHL: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageProfileSetup,
+      postAuthWizardPageProfileSetup("${userEori}"),
       getTGPProfilePage,
       postTGPProfilePage,
       getUkimsNumberPage,
       postUkimsNumberPage,
       getNirmsQuestionPage,
-      postNirmsQuestionPage(true),
+      postNirmsQuestionPage(Yes),
       getNirmsNumberPage,
       postNirmsNumberPage,
       getNiphlQuestionPage,
-      postNiphlQuestionPage(true),
+      postNiphlQuestionPage(Yes),
       getNiphlNumberPage,
       postNiphlNumberPage,
       getProfileSetupCYAPage,
@@ -52,15 +53,13 @@ class TgpSimulation extends PerformanceTestRunner {
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
       getTraderReferencePage,
-      postTraderReferencePage,
+      postTraderReferencePage("Category2${reference}"),
       getGoodsDescriptionQuestionPage,
-      postGoodsDescriptionQuestionPage(false),
-      getGoodsDescriptionPage,
-      postGoodsDescriptionPage,
+      postGoodsDescriptionQuestionPage(Yes),
       getCountryOfOriginPage,
       postCountryOfOriginPage("GB"),
       getCommodityCodePage,
-      postCommodityCodePage(true, "170490"),
+      postCommodityCodePage(Yes, "170490"),
       getCommodityCodeResultPage("1704900000"),
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
@@ -69,11 +68,11 @@ class TgpSimulation extends PerformanceTestRunner {
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
-      postCategoryAssessmentPage("1", "Y997"),
+      postCategoryAssessmentPage("1", Yes),
       getCategoryAssessmentPage("2"),
-      postCategoryAssessmentPage("2", "Y984"),
+      postCategoryAssessmentPage("2", Yes),
       getCategoryAssessmentPage("3"),
-      postCategoryAssessmentPage("3", "none"),
+      postCategoryAssessmentPage("3", Yes),
       getLongerCommodityCodePage,
       postLongerCommodityCodePage("99"),
       getLongerCommodityCodeResultPage("1704909900"),
@@ -95,13 +94,13 @@ class TgpSimulation extends PerformanceTestRunner {
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
       getTraderReferencePage,
-      postTraderReferencePage,
+      postTraderReferencePage("Category3${reference}"),
       getGoodsDescriptionQuestionPage,
-      postGoodsDescriptionQuestionPage(true),
+      postGoodsDescriptionQuestionPage(Yes),
       getCountryOfOriginPage,
       postCountryOfOriginPage("IQ"),
       getCommodityCodePage,
-      postCommodityCodePage(true, "3602000090"),
+      postCommodityCodePage(Yes, "3602000090"),
       getCommodityCodeResultPage("3602000090"),
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
@@ -110,21 +109,21 @@ class TgpSimulation extends PerformanceTestRunner {
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
-      postCategoryAssessmentPage("1", "Y949"),
+      postCategoryAssessmentPage("1", Yes),
       getCategoryAssessmentPage("2"),
-      postCategoryAssessmentPage("2", "Y920"),
+      postCategoryAssessmentPage("2", Yes),
       getCategoryAssessmentPage("3"),
-      postCategoryAssessmentPage("3", "Y957"),
+      postCategoryAssessmentPage("3", Yes),
       getCategoryAssessmentPage("4"),
-      postCategoryAssessmentPage("4", "Y920"),
+      postCategoryAssessmentPage("4", Yes),
       getCategoryAssessmentPage("5"),
-      postCategoryAssessmentPage("5", "Y997"),
+      postCategoryAssessmentPage("5", Yes),
       getCategoryAssessmentPage("6"),
-      postCategoryAssessmentPage("6", "Y984"),
+      postCategoryAssessmentPage("6", Yes),
       getCategoryAssessmentPage("7"),
-      postCategoryAssessmentPage("7", "Y949"),
+      postCategoryAssessmentPage("7", Yes),
       getCategoryAssessmentPage("8"),
-      postCategoryAssessmentPage("8", "Y923"),
+      postCategoryAssessmentPage("8", Yes),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
       getCategoryResultPage("standard")
@@ -138,13 +137,13 @@ class TgpSimulation extends PerformanceTestRunner {
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
       getTraderReferencePage,
-      postTraderReferencePage,
+      postTraderReferencePage("Category1${reference}"),
       getGoodsDescriptionQuestionPage,
-      postGoodsDescriptionQuestionPage(true),
+      postGoodsDescriptionQuestionPage(Yes),
       getCountryOfOriginPage,
       postCountryOfOriginPage("IQ"),
       getCommodityCodePage,
-      postCommodityCodePage(true, "9301900000"),
+      postCommodityCodePage(Yes, "9301900000"),
       getCommodityCodeResultPage("9301900000"),
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
@@ -153,9 +152,9 @@ class TgpSimulation extends PerformanceTestRunner {
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
-      postCategoryAssessmentPage("1", "8392"),
+      postCategoryAssessmentPage("1", Yes),
       getCategoryAssessmentPage("2"),
-      postCategoryAssessmentPage("2", "none"),
+      postCategoryAssessmentPage("2", No),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
       getCategoryResultPage("category-1"),
@@ -173,6 +172,8 @@ class TgpSimulation extends PerformanceTestRunner {
       getAdviceSuccessPage
     )
 
+  setup("test-prep", "Prepare for test") withActions (Setup.setupSession: _*)
+
   setup("CreateTGPProfile", "TGP Profile Setup Journey With UKIMS, NIRMS And NIPHL")
     .withRequests(profileSetupJourneyWithUKIMSNIRMSAndNIPHL: _*)
 
@@ -185,11 +186,11 @@ class TgpSimulation extends PerformanceTestRunner {
   setup("Category1GoodsRequestAdviceJourney", "Create Record, Category 1 Goods Journey and Request Advice Journey")
     .withRequests(createRecordCategory1Goods: _*)
 
-  /*before {
+  before {
     dropCollections()
-  }*/
+  }
   runSimulation()
-  /*after {
+  after {
     dropCollections()
-  }*/
+  }
 }

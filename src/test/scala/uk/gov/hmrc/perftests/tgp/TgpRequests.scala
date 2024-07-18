@@ -17,28 +17,9 @@
 package uk.gov.hmrc.perftests.tgp
 
 import io.gatling.http.request.builder.HttpRequestBuilder
-import uk.gov.hmrc.perftests.tgp.AuthRequests.rand
 import uk.gov.hmrc.perftests.tgp.Requests._
 
-object TgpRequests extends Configuration {
-
-//  private lazy val mongoClient: MongoClient = MongoClient()
-  val recordId                              = "4e889d8f-31ae-41af-90fd-db99c72460eb"
-  def traderReference: String               = "Trader " + rand.nextInt()
-  //Todo remove if not needed
-  /*def dropCollections(): Unit               = {
-    println("============================Dropping Collection")
-
-    def dropCollection(dbName: String, collectionName: String): Unit =
-      Await.result(
-        mongoClient.getDatabase(dbName).getCollection(collectionName).drop().toFuture(),
-        10 seconds
-      )
-
-    dropCollection("trader-goods-profiles-data-store", "profiles")
-    dropCollection("trader-goods-profiles-data-store", "checkRecords")
-    dropCollection("trader-goods-profiles-data-store", "goodsItemRecords")
-  }*/
+object TgpRequests extends Configuration with DropDatabase {
 
   implicit class BooleanOps(b: Boolean) {
     def toPayload: Map[String, String] = if (b) Map("value" -> "true") else Map("value" -> "false")
@@ -181,14 +162,12 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/create-record/trader-reference"
     )
 
-  def postTraderReferencePage: HttpRequestBuilder = {
-    println("TraderReference$$$$$:" + traderReference)
+  def postTraderReferencePage(ref: String): HttpRequestBuilder =
     postPage(
       "enter your Trader Reference",
       s"$tgpUrl/trader-goods-profiles/create-record/trader-reference",
-      Map("value" -> traderReference)
+      Map("value" -> ref)
     )
-  }
 
   def getGoodsDescriptionQuestionPage: HttpRequestBuilder =
     getPage(
@@ -315,12 +294,12 @@ object TgpRequests extends Configuration {
         .parseInt(categoryNumber.trim) - 1)
     )
 
-  def postCategoryAssessmentPage(categoryNumber: String, conditionValue: String): HttpRequestBuilder =
+  def postCategoryAssessmentPage(categoryNumber: String, answer: Boolean): HttpRequestBuilder =
     postPage(
       "Category assessment " + categoryNumber,
       s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/category-assessment/" + (Integer
         .parseInt(categoryNumber.trim) - 1),
-      Map("value" -> conditionValue)
+      answer.toPayload
     )
 
   def getLongerCommodityCodePage: HttpRequestBuilder =
