@@ -32,9 +32,9 @@ object Setup {
   )
 
   private def randomAlphaNumericString: String = {
-    val chars = ('a' to 'z') ++ ('A' to 'Z') ++ ('0' to '9')
-    val lrn   = List.fill(15)(chars(util.Random.nextInt(chars.length))).mkString("")
-    URLEncoder.encode(lrn, "UTF-8")
+    val chars     = ('a' to 'z') ++ ('A' to 'Z') ++ ('0' to '9')
+    val reference = List.fill(15)(chars(util.Random.nextInt(chars.length))).mkString("")
+    URLEncoder.encode(reference, "UTF-8")
   }
 
   private def nextEori(counter: Int): String =
@@ -44,7 +44,7 @@ object Setup {
     session.setAll(
       List(
         "reference" -> randomAlphaNumericString,
-        "userEori"        -> eori
+        "userEori"  -> eori
       )
     )
 

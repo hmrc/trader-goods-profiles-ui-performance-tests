@@ -17,30 +17,9 @@
 package uk.gov.hmrc.perftests.tgp
 
 import io.gatling.http.request.builder.HttpRequestBuilder
-import org.mongodb.scala.MongoClient
 import uk.gov.hmrc.perftests.tgp.Requests._
 
-import scala.concurrent.Await
-import scala.concurrent.duration.DurationInt
-import scala.language.postfixOps
-
-object TgpRequests extends Configuration {
-
-  private lazy val mongoClient: MongoClient = MongoClient()
-
-  def dropCollections(): Unit = {
-    println("============================Dropping Collection")
-
-    def dropCollection(dbName: String, collectionName: String): Unit =
-      Await.result(
-        mongoClient.getDatabase(dbName).getCollection(collectionName).drop().toFuture(),
-        10 seconds
-      )
-
-    dropCollection("trader-goods-profiles-data-store", "profiles")
-    dropCollection("trader-goods-profiles-data-store", "checkRecords")
-    dropCollection("trader-goods-profiles-data-store", "goodsItemRecords")
-  }
+object TgpRequests extends Configuration with DropDatabase {
 
   implicit class BooleanOps(b: Boolean) {
     def toPayload: Map[String, String] = if (b) Map("value" -> "true") else Map("value" -> "false")

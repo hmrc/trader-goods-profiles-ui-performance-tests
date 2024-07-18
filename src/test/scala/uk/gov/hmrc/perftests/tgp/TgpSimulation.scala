@@ -22,8 +22,8 @@ import uk.gov.hmrc.perftests.tgp.AuthRequests.{getAuthWizardPage, postAuthWizard
 import uk.gov.hmrc.perftests.tgp.TgpRequests._
 
 class TgpSimulation extends PerformanceTestRunner {
-  val Yes = true
-  val No = false
+  val Yes                                                                = true
+  val No                                                                 = false
   val profileSetupJourneyWithUKIMSNIRMSAndNIPHL: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
@@ -55,9 +55,7 @@ class TgpSimulation extends PerformanceTestRunner {
       getTraderReferencePage,
       postTraderReferencePage("Category2${reference}"),
       getGoodsDescriptionQuestionPage,
-      postGoodsDescriptionQuestionPage(No),
-      getGoodsDescriptionPage,
-      postGoodsDescriptionPage,
+      postGoodsDescriptionQuestionPage(Yes),
       getCountryOfOriginPage,
       postCountryOfOriginPage("GB"),
       getCommodityCodePage,
