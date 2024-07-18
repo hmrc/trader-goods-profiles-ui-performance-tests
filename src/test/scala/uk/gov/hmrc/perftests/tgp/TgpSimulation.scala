@@ -72,7 +72,7 @@ class TgpSimulation extends PerformanceTestRunner {
       getCategoryAssessmentPage("2"),
       postCategoryAssessmentPage("2", Yes),
       getCategoryAssessmentPage("3"),
-      postCategoryAssessmentPage("3", Yes),
+      postCategoryAssessmentPage("3", No),
       getLongerCommodityCodePage,
       postLongerCommodityCodePage("99"),
       getLongerCommodityCodeResultPage("1704909900"),
@@ -186,11 +186,11 @@ class TgpSimulation extends PerformanceTestRunner {
   setup("Category1GoodsRequestAdviceJourney", "Create Record, Category 1 Goods Journey and Request Advice Journey")
     .withRequests(createRecordCategory1Goods: _*)
 
-  before {
-    dropCollections()
-  }
+//  before {
+//    dropCollections()
+//  }
   runSimulation()
-  after {
-    dropCollections()
-  }
+//  after {
+//    dropCollections()
+//  }
 }
