@@ -27,7 +27,7 @@ class TgpSimulation extends PerformanceTestRunner {
 
   val profileSetupJourneyWithUKIMSNIRMSAndNIPHL: Seq[HttpRequestBuilder] =
     Seq(
-      dropProfilesCollection,
+//      dropProfilesCollection,
       getAuthWizardPage,
       postAuthWizardPageProfileSetup("${userEori}"),
       getTGPProfilePage,
