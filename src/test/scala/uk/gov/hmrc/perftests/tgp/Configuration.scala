@@ -19,6 +19,7 @@ package uk.gov.hmrc.perftests.tgp
 import uk.gov.hmrc.performance.conf.ServicesConfiguration
 
 trait Configuration extends ServicesConfiguration {
-  val authUrl: String = baseUrlFor("auth-login-stub")
-  val tgpUrl: String  = baseUrlFor("tgp-frontend")
+  val authUrl: String     = baseUrlFor("auth-login-stub")
+  val tgpUrl: String      = baseUrlFor("tgp-frontend")
+  val profilesurl: String = baseUrlFor("tgp-profiles")
 }

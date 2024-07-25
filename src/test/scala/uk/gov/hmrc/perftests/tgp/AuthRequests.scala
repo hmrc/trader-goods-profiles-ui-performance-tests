@@ -28,6 +28,10 @@ object AuthRequests extends Configuration {
   private val homepageUrl: String     = "/trader-goods-profiles/homepage"
   val rand                            = new scala.util.Random
 
+  val dropProfilesCollection: HttpRequestBuilder =
+    http("Delete profiles")
+      .delete(s"$profilesurl/traders/profile")
+
   val getAuthWizardPage: HttpRequestBuilder =
     http("GET Navigate to /auth-login-stub/gg-sign-in")
       .get(authWizardUrl)

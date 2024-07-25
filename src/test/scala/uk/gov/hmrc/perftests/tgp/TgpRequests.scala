@@ -19,7 +19,7 @@ package uk.gov.hmrc.perftests.tgp
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.perftests.tgp.Requests._
 
-object TgpRequests extends Configuration with DropDatabase {
+object TgpRequests extends Configuration {
 
   implicit class BooleanOps(b: Boolean) {
     def toPayload: Map[String, String] = if (b) Map("value" -> "true") else Map("value" -> "false")
