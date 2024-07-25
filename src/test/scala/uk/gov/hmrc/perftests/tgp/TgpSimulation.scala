@@ -18,14 +18,16 @@ package uk.gov.hmrc.perftests.tgp
 
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
-import uk.gov.hmrc.perftests.tgp.AuthRequests.{getAuthWizardPage, postAuthWizardPageHome, postAuthWizardPageProfileSetup}
+import uk.gov.hmrc.perftests.tgp.AuthRequests.{dropProfilesCollection, getAuthWizardPage, postAuthWizardPageHome, postAuthWizardPageProfileSetup}
 import uk.gov.hmrc.perftests.tgp.TgpRequests._
 
 class TgpSimulation extends PerformanceTestRunner {
-  val Yes                                                                = true
-  val No                                                                 = false
+  val Yes = true
+  val No  = false
+
   val profileSetupJourneyWithUKIMSNIRMSAndNIPHL: Seq[HttpRequestBuilder] =
     Seq(
+      dropProfilesCollection,
       getAuthWizardPage,
       postAuthWizardPageProfileSetup("${userEori}"),
       getTGPProfilePage,
@@ -65,6 +67,9 @@ class TgpSimulation extends PerformanceTestRunner {
       getCreateRecordCYAPage,
       postCreateRecordCYAPage,
       getCreateRecordSuccessPage,
+      getHomePage,
+      getGoodsProfilePage,
+      getGoodsRecordPage,
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -89,7 +94,7 @@ class TgpSimulation extends PerformanceTestRunner {
   val createRecordCategory3Goods: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageHome("GB123456789123"),
+      postAuthWizardPageHome("GB123456789098"),
       getHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
@@ -106,6 +111,9 @@ class TgpSimulation extends PerformanceTestRunner {
       getCreateRecordCYAPage,
       postCreateRecordCYAPage,
       getCreateRecordSuccessPage,
+      getHomePage,
+      getGoodsProfilePage,
+      getGoodsRecordPage,
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -132,7 +140,7 @@ class TgpSimulation extends PerformanceTestRunner {
   val createRecordCategory1Goods: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageHome("GB123456789123"),
+      postAuthWizardPageHome("GB123456789099"),
       getHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
@@ -149,6 +157,9 @@ class TgpSimulation extends PerformanceTestRunner {
       getCreateRecordCYAPage,
       postCreateRecordCYAPage,
       getCreateRecordSuccessPage,
+      getHomePage,
+      getGoodsProfilePage,
+      getGoodsRecordPage,
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -186,11 +197,6 @@ class TgpSimulation extends PerformanceTestRunner {
   setup("Category1GoodsRequestAdviceJourney", "Create Record, Category 1 Goods Journey and Request Advice Journey")
     .withRequests(createRecordCategory1Goods: _*)
 
-//  before {
-//    dropCollections()
-//  }
   runSimulation()
-//  after {
-//    dropCollections()
-//  }
+
 }
