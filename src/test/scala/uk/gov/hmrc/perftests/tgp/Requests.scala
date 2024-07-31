@@ -20,15 +20,17 @@ import io.gatling.core.Predef._
 import io.gatling.http.Predef._
 import io.gatling.http.request.builder.HttpRequestBuilder
 import io.netty.handler.codec.http.HttpResponseStatus.{BAD_REQUEST, OK, SEE_OTHER}
+import uk.gov.hmrc.perftests.tgp.TgpRequests.tgpUrl
 
 object Requests {
 
   def getPage(
     pageTitle: String,
-    saveToken: Boolean,
     url: String,
+    saveToken: Boolean = false,
     pageContent: Option[String] = None,
-    expectedStatus: Int = OK.code()
+    expectedStatus: Int = OK.code(),
+    saveId: Boolean = false
   ): HttpRequestBuilder = {
     val builder = http("GET " + pageTitle)
       .get(url)
@@ -36,9 +38,22 @@ object Requests {
       .check(currentLocation.is(url))
       .check(regex(pageTitle))
 
+    val updatedBuilder =
+      if (saveId) {
+        val recordId = url.split("/trader-goods-profiles/goods-record/")(1)
+
+        println("RECORD ID: " + recordId)
+
+        builder.check(
+          regex(pageTitle)
+            .transform(s => recordId)
+            .saveAs("recordId")
+        )
+      } else builder
+
     val httpRequestBuilder = pageContent match {
-      case Some(value) => builder.check(substring(value))
-      case None        => builder
+      case Some(value) => updatedBuilder.check(substring(value))
+      case None        => updatedBuilder
     }
 
     if (saveToken) {
@@ -47,9 +62,6 @@ object Requests {
       httpRequestBuilder
     }
   }
-
-  def getPage(pageTitle: String, url: String): HttpRequestBuilder =
-    getPage(pageTitle, saveToken = false, url, pageContent = None)
 
   def postPage(
     pageName: String,
@@ -67,7 +79,8 @@ object Requests {
     pageName: String,
     currentPage: String,
     nextPage: String,
-    payload: Map[String, String]
+    payload: Map[String, String],
+    recordId: Option[String] = None
   ): HttpRequestBuilder = {
 
     val extractRecordId: String => String = { (s: String) =>
@@ -82,7 +95,7 @@ object Requests {
       .check(status.is(SEE_OTHER.code()))
       .check(
         header("location")
-          .transform(s => extractRecordId(s))
+          .transform(s => if (recordId.isDefined) recordId.isDefined else extractRecordId(s))
           .saveAs("recordId")
       )
   }

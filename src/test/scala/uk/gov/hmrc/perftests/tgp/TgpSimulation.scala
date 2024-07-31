@@ -22,10 +22,10 @@ import uk.gov.hmrc.perftests.tgp.AuthRequests.{getAuthWizardPage, postAuthWizard
 import uk.gov.hmrc.perftests.tgp.TgpRequests._
 
 class TgpSimulation extends PerformanceTestRunner {
-  val Yes                                                                = true
-  val No                                                                 = false
+  val Yes = true
+  val No  = false
 
-  val createRecordCategory1Goods: Seq[HttpRequestBuilder] =
+  val createTGPProfile: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
       postAuthWizardPageProfileSetup("${userEori}"),
@@ -43,10 +43,37 @@ class TgpSimulation extends PerformanceTestRunner {
       postNiphlNumberPage,
       getProfileSetupCYAPage,
       postProfileSetupCYAPage,
+      getHomePage
+    )
+
+  val createRecord: Seq[HttpRequestBuilder] =
+    Seq(
+//      getAuthWizardPage,
+//      postAuthWizardPageHome("${userEori}"),
       getHomePage,
-      getGoodsProfilePage,
-      postGoodsProfilePage("Category1${reference}"), // Add stub trader ref for category1 good
-      getGoodsRecordPage,
+      getCreatingAGoodsRecordPage,
+      postCreatingAGoodsRecordPage,
+      getTraderReferencePage,
+      postTraderReferencePage("CreateRecord${reference}"),
+      getGoodsDescriptionQuestionPage,
+      postGoodsDescriptionQuestionPage(Yes),
+      getCountryOfOriginPage,
+      postCountryOfOriginPage("GB"),
+      getCommodityCodePage,
+      postCommodityCodePage(Yes, "170490"),
+      getCommodityCodeResultPage("1704900000"),
+      postCommodityCodeResultPage,
+      getCreateRecordCYAPage,
+      postCreateRecordCYAPage,
+//      getCreateRecordSuccessPage
+    )
+
+  val categorisationCategory1Good: Seq[HttpRequestBuilder] =
+    Seq(
+//      getAuthWizardPage,
+//      postAuthWizardPageHome("${userEori}"),
+      getHomePage,
+      getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -56,10 +83,7 @@ class TgpSimulation extends PerformanceTestRunner {
       getCyaCategorisationPage,
       postCyaCategorisationPage,
       getCategoryResultPage("category-1"),
-      getHomePage,
-      getGoodsProfilePage,
-      postGoodsProfilePage("Category1${reference}"),// Add stub trader ref for category1 good
-      getGoodsRecordPage,
+      getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
       getAdviceStartPage,
       postAdviceStartPage,
       getAskNamePage,
@@ -71,14 +95,12 @@ class TgpSimulation extends PerformanceTestRunner {
       getAdviceSuccessPage
     )
 
-  val createRecordCategory2LongerCommodityCodSupplementaryUnit: Seq[HttpRequestBuilder] =
+  val categorisationCategory2Good: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
+//      getAuthWizardPage,
+//      postAuthWizardPageHome("${userEori}"),
       getHomePage,
-      getGoodsProfilePage,
-      postGoodsProfilePage("Category2${reference}"), // Add stub trader ref for category2 good
-      getGoodsRecordPage,
+      getGoodsRecordPageWithId("3dcd34a4-6a5d-4730-bc7a-92618b132c50"),
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -100,14 +122,12 @@ class TgpSimulation extends PerformanceTestRunner {
       getCategoryResultPage("category-2")
     )
 
-  val createRecordCategory3Goods: Seq[HttpRequestBuilder] =
+  val categorisationCategory3Good: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
+//      getAuthWizardPage,
+//      postAuthWizardPageHome("${userEori}"),
       getHomePage,
-      getGoodsProfilePage,
-      postGoodsProfilePage("Category3${reference}"),// Add stub trader ref for category3 good
-      getGoodsRecordPage,
+      getGoodsRecordPageWithId("38c33c85-6a8a-4cac-a381-2f17cffbb24f"),
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -133,8 +153,8 @@ class TgpSimulation extends PerformanceTestRunner {
 
   val maintainProfile: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
+//      getAuthWizardPage,
+//      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getProfileInformationPage,
       getUpdateUKIMSNumberPage,
@@ -151,12 +171,10 @@ class TgpSimulation extends PerformanceTestRunner {
 
   val deleteRecord: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
+//      getAuthWizardPage,
+//      postAuthWizardPageHome("${userEori}"),
       getHomePage,
-      getGoodsProfilePage,
-      postGoodsProfilePage("DeleteRecord${reference}"),// Add stub trader ref for deleting record
-      getGoodsRecordPage,
+      getGoodsRecordPageWithId("38c33c85-6a8a-4cac-a381-2f17cffbb24f"),
       getRemoveGoodsRecordPage,
       postRemoveGoodsRecordPage(Yes)
     )
@@ -169,14 +187,26 @@ class TgpSimulation extends PerformanceTestRunner {
   setup("DeleteTGPRecord", "Delete a TGP record")
     .withRequests(deleteRecord: _*)
 
-  setup("Category2GoodsJourney", "Create Record, Category 2 With Longer Commodity Code and Supplementary Unit")
-    .withRequests(createRecordCategory2LongerCommodityCodSupplementaryUnit: _*)
+  setup("createTGPProfile", "Create TGP Profile")
+    .withRequests(createTGPProfile: _*)
 
-  setup("Category3GoodsJourney", "Create Record, Category 3 Goods Journey")
-    .withRequests(createRecordCategory3Goods: _*)
+  setup("createRecord", "Create a Record")
+    .withRequests(createRecord: _*)
 
-  setup("Category1GoodsRequestAdviceJourney", "Create Profile, Create Record, Category 1 Goods Journey and Request Advice Journey")
-    .withRequests(createRecordCategory1Goods: _*)
+  setup(
+    "categorisationCategory2GoodWithLongerCommodityCodeAndSupplementaryUnit",
+    "Categorisation Category 2 With Longer Commodity Code and Supplementary Unit"
+  )
+    .withRequests(categorisationCategory2Good: _*)
+
+  setup("categorisationCategory3Good", "Categorisation Category 3 Goods Journey")
+    .withRequests(categorisationCategory3Good: _*)
+
+  setup(
+    "categorisationCategory1GoodRequestAdviceJourney",
+    "Categorisation Category 1 Goods Journey and Request Advice Journey"
+  )
+    .withRequests(categorisationCategory1Good: _*)
 
   runSimulation()
 
