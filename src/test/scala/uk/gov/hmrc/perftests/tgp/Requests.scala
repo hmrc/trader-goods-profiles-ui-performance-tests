@@ -48,8 +48,8 @@ object Requests {
     }
   }
 
-  def getPage(stepName: String, url: String): HttpRequestBuilder =
-    getPage(stepName, saveToken = false, url, pageContent = None)
+  def getPage(pageTitle: String, url: String): HttpRequestBuilder =
+    getPage(pageTitle, saveToken = false, url, pageContent = None)
 
   def postPage(
     pageName: String,

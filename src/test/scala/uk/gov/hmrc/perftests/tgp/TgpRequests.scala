@@ -41,7 +41,7 @@ object TgpRequests extends Configuration {
 
   def getUkimsNumberPage: HttpRequestBuilder =
     getPage(
-      """""",
+      "UK Internal Market Scheme",
       saveToken = true,
       s"$tgpUrl/trader-goods-profiles/create-profile/ukims-number"
     )
@@ -378,18 +378,6 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/result/" + category
     )
 
-  def getPreviousMovementRecordsPage: HttpRequestBuilder  =
-    getPage(
-      "Previous movement records",
-      s"$tgpUrl/trader-goods-profiles/previous-movement-records"
-    )
-  def postPreviousMovementRecordsPage: HttpRequestBuilder =
-    postPage(
-      "Previous movement records",
-      s"$tgpUrl/trader-goods-profiles/previous-movement-records",
-      Map.empty[String, String]
-    )
-
   def getGoodsProfilePage: HttpRequestBuilder =
     getPage(
       "Goods profile",
@@ -397,10 +385,30 @@ object TgpRequests extends Configuration {
       s"""$tgpUrl/trader-goods-profiles/goods-profile?page=1"""
     )
 
+  def postGoodsProfilePage(traderReference: String): HttpRequestBuilder =
+    postPage(
+      "Goods profile",
+      s"""$tgpUrl/trader-goods-profiles/goods-profile?page=1""",
+      Map("value" -> traderReference)
+    )
+
   def getGoodsRecordPage: HttpRequestBuilder =
     getPage(
       "Goods record",
       s"$tgpUrl/trader-goods-profiles/goods-record/$${recordId}"
+    )
+
+  def getRemoveGoodsRecordPage: HttpRequestBuilder =
+    getPage(
+      "Removing goods record",
+      s"$tgpUrl/trader-goods-profiles/remove-record/$${recordId}/goods-record"
+    )
+
+  def postRemoveGoodsRecordPage(answer: Boolean): HttpRequestBuilder =
+    postPage(
+      "Removing goods record",
+      s"$tgpUrl/trader-goods-profiles/remove-record/$${recordId}/goods-record",
+      answer.toPayload
     )
 
   def getAdviceStartPage: HttpRequestBuilder =
@@ -471,5 +479,83 @@ object TgpRequests extends Configuration {
     getPage(
       "Request for advice complete",
       s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/create-advice/success"
+    )
+
+  /** ** Maintain Profile ***
+    */
+  def getProfileInformationPage: HttpRequestBuilder =
+    getPage(
+      "Profile details",
+      s"$tgpUrl/trader-goods-profiles/update-profile/profile-information"
+    )
+
+  def getUpdateUKIMSNumberPage: HttpRequestBuilder =
+    getPage(
+      "UK Internal Market Scheme",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/update-profile/ukims-number"
+    )
+
+  def postUpdateUKIMSNumberPage(UkimsNumber: String): HttpRequestBuilder =
+    postPage(
+      "enter your UKIMS number",
+      s"$tgpUrl/trader-goods-profiles/update-profile/ukims-number",
+      Map("value" -> UkimsNumber)
+    )
+
+  def getUpdateNirmsQuestionPage: HttpRequestBuilder =
+    getPage(
+      "Northern Ireland Retail Movement Scheme",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/update-profile/nirms-question"
+    )
+
+  def postUpdateNirmsQuestionPage(answer: Boolean): HttpRequestBuilder =
+    postPage(
+      "Click Yes or No on NIRMS Question Page",
+      s"$tgpUrl/trader-goods-profiles/update-profile/nirms-question",
+      answer.toPayload
+    )
+
+  def getUpdateNirmsNumberPage: HttpRequestBuilder =
+    getPage(
+      "What is your NIRMS number?",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/update-profile/nirms-number"
+    )
+
+  def postUpdateNirmsNumberPage(nirmsNumber: String): HttpRequestBuilder =
+    postPage(
+      "enter your NIRMS number",
+      s"$tgpUrl/trader-goods-profiles/update-profile/nirms-number",
+      Map("value" -> nirmsNumber)
+    )
+
+  def getUpdateNiphlQuestionPage: HttpRequestBuilder =
+    getPage(
+      "Northern Ireland plant health label",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/update-profile/niphl-question"
+    )
+
+  def postUpdateNiphlQuestionPage(answer: Boolean): HttpRequestBuilder =
+    postPage(
+      "Click Yes or No on NIPHL Question Page",
+      s"$tgpUrl/trader-goods-profiles/update-profile/niphl-question",
+      answer.toPayload
+    )
+
+  def getUpdateNiphlNumberPage: HttpRequestBuilder =
+    getPage(
+      "NIPHL registration number",
+      saveToken = true,
+      s"$tgpUrl/trader-goods-profiles/update-profile/niphl-number"
+    )
+
+  def postUpdateNiphlNumberPage(niphlNumber: String): HttpRequestBuilder =
+    postPage(
+      "enter your NIPHL number",
+      s"$tgpUrl/trader-goods-profiles/update-profile/niphl-number",
+      Map("value" -> niphlNumber)
     )
 }
