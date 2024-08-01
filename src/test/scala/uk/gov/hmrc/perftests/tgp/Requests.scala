@@ -42,11 +42,9 @@ object Requests {
       if (saveId) {
         val recordId = url.split("/trader-goods-profiles/goods-record/")(1)
 
-        println("RECORD ID: " + recordId)
-
         builder.check(
           regex(pageTitle)
-            .transform(s => recordId)
+            .transform(_ => recordId)
             .saveAs("recordId")
         )
       } else builder
@@ -79,8 +77,7 @@ object Requests {
     pageName: String,
     currentPage: String,
     nextPage: String,
-    payload: Map[String, String],
-    recordId: Option[String] = None
+    payload: Map[String, String]
   ): HttpRequestBuilder = {
 
     val extractRecordId: String => String = { (s: String) =>
@@ -95,7 +92,7 @@ object Requests {
       .check(status.is(SEE_OTHER.code()))
       .check(
         header("location")
-          .transform(s => if (recordId.isDefined) recordId.isDefined else extractRecordId(s))
+          .transform(s => extractRecordId(s))
           .saveAs("recordId")
       )
   }

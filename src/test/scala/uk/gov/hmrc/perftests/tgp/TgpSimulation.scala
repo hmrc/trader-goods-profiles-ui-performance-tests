@@ -19,6 +19,7 @@ package uk.gov.hmrc.perftests.tgp
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
 import uk.gov.hmrc.perftests.tgp.AuthRequests.{getAuthWizardPage, postAuthWizardPageHome, postAuthWizardPageProfileSetup}
+import uk.gov.hmrc.perftests.tgp.Setup.randomAlphaNumericString
 import uk.gov.hmrc.perftests.tgp.TgpRequests._
 
 class TgpSimulation extends PerformanceTestRunner {
@@ -48,13 +49,13 @@ class TgpSimulation extends PerformanceTestRunner {
 
   val createRecord: Seq[HttpRequestBuilder] =
     Seq(
-//      getAuthWizardPage,
-//      postAuthWizardPageHome("${userEori}"),
+      getAuthWizardPage,
+      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
       getTraderReferencePage,
-      postTraderReferencePage("CreateRecord${reference}"),
+      postTraderReferencePage(randomAlphaNumericString),
       getGoodsDescriptionQuestionPage,
       postGoodsDescriptionQuestionPage(Yes),
       getCountryOfOriginPage,
@@ -64,14 +65,14 @@ class TgpSimulation extends PerformanceTestRunner {
       getCommodityCodeResultPage("1704900000"),
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
-      postCreateRecordCYAPage,
+      postCreateRecordCYAPage
 //      getCreateRecordSuccessPage
     )
 
   val categorisationCategory1Good: Seq[HttpRequestBuilder] =
     Seq(
-//      getAuthWizardPage,
-//      postAuthWizardPageHome("${userEori}"),
+      getAuthWizardPage,
+      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
       getCategorisationStartPage,
@@ -193,20 +194,20 @@ class TgpSimulation extends PerformanceTestRunner {
   setup("createRecord", "Create a Record")
     .withRequests(createRecord: _*)
 
-  setup(
-    "categorisationCategory2GoodWithLongerCommodityCodeAndSupplementaryUnit",
-    "Categorisation Category 2 With Longer Commodity Code and Supplementary Unit"
-  )
-    .withRequests(categorisationCategory2Good: _*)
-
-  setup("categorisationCategory3Good", "Categorisation Category 3 Goods Journey")
-    .withRequests(categorisationCategory3Good: _*)
-
-  setup(
-    "categorisationCategory1GoodRequestAdviceJourney",
-    "Categorisation Category 1 Goods Journey and Request Advice Journey"
-  )
-    .withRequests(categorisationCategory1Good: _*)
+//  setup(
+//    "categorisationCategory2GoodWithLongerCommodityCodeAndSupplementaryUnit",
+//    "Categorisation Category 2 With Longer Commodity Code and Supplementary Unit"
+//  )
+//    .withRequests(categorisationCategory2Good: _*)
+//
+//  setup("categorisationCategory3Good", "Categorisation Category 3 Goods Journey")
+//    .withRequests(categorisationCategory3Good: _*)
+//
+//  setup(
+//    "categorisationCategory1GoodRequestAdviceJourney",
+//    "Categorisation Category 1 Goods Journey and Request Advice Journey"
+//  )
+//    .withRequests(categorisationCategory1Good: _*)
 
   runSimulation()
 

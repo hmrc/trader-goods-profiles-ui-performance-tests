@@ -31,7 +31,7 @@ object Setup {
     20 -> Gen.delay(Gen.const(nextEori(counter)))
   )
 
-  private def randomAlphaNumericString: String = {
+  def randomAlphaNumericString: String = {
     val chars     = ('a' to 'z') ++ ('A' to 'Z') ++ ('0' to '9')
     val reference = List.fill(15)(chars(util.Random.nextInt(chars.length))).mkString("")
     URLEncoder.encode(reference, "UTF-8")
@@ -56,6 +56,7 @@ object Setup {
       // Incrementing unique EORIs
       val nextId = Counter.incrementAndGet()
       val eori   = eoriGenerator(nextId).sample.get
+      println(eori)
       setupSession(eori, session)
     }.actionBuilders
 }
