@@ -334,13 +334,14 @@ object TgpRequests extends Configuration {
     getPage(
       "Supplementary unit",
       saveToken = true,
-      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/supplementary-unit-question"
+      url =
+        s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/supplementary-unit-question/create"
     )
 
   def postSupplementaryQuestionPage: HttpRequestBuilder =
     postPage(
       "Click Yes on Supplementary unit Page",
-      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/supplementary-unit-question",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/supplementary-unit-question/create",
       true.toPayload
     )
 
@@ -348,13 +349,13 @@ object TgpRequests extends Configuration {
     getPage(
       "",
       saveToken = true,
-      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/supplementary-unit-amount"
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/supplementary-unit-amount/create"
     )
 
   def postSupplementaryUnitPage(Unit: String): HttpRequestBuilder =
     postPage(
       "Enter Supplementary unit",
-      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/supplementary-unit-amount",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/supplementary-unit-amount/create",
       Map("value" -> Unit)
     )
 
