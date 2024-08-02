@@ -18,16 +18,16 @@ package uk.gov.hmrc.perftests.tgp
 
 import io.gatling.http.request.builder.HttpRequestBuilder
 import uk.gov.hmrc.performance.simulation.PerformanceTestRunner
-import uk.gov.hmrc.perftests.tgp.AuthRequests.{dropProfilesCollection, getAuthWizardPage, postAuthWizardPageHome, postAuthWizardPageProfileSetup}
+import uk.gov.hmrc.perftests.tgp.AuthRequests.{getAuthWizardPage, postAuthWizardPageHome, postAuthWizardPageProfileSetup}
+import uk.gov.hmrc.perftests.tgp.Setup.randomAlphaNumericString
 import uk.gov.hmrc.perftests.tgp.TgpRequests._
 
 class TgpSimulation extends PerformanceTestRunner {
   val Yes = true
   val No  = false
 
-  val profileSetupJourneyWithUKIMSNIRMSAndNIPHL: Seq[HttpRequestBuilder] =
+  val createTGPProfile: Seq[HttpRequestBuilder] =
     Seq(
-//      dropProfilesCollection,
       getAuthWizardPage,
       postAuthWizardPageProfileSetup("${userEori}"),
       getTGPProfilePage,
@@ -47,15 +47,15 @@ class TgpSimulation extends PerformanceTestRunner {
       getHomePage
     )
 
-  val createRecordCategory2LongerCommodityCodSupplementaryUnit: Seq[HttpRequestBuilder] =
+  val createRecord: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageHome("GB123456789123"),
+      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
       getTraderReferencePage,
-      postTraderReferencePage("Category2${reference}"),
+      postTraderReferencePage(randomAlphaNumericString),
       getGoodsDescriptionQuestionPage,
       postGoodsDescriptionQuestionPage(Yes),
       getCountryOfOriginPage,
@@ -65,11 +65,40 @@ class TgpSimulation extends PerformanceTestRunner {
       getCommodityCodeResultPage("1704900000"),
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
-      postCreateRecordCYAPage,
-      getCreateRecordSuccessPage,
+      postCreateRecordCYAPage
+    )
+
+  val categorisationCategory1GoodAndRequestAdvice: Seq[HttpRequestBuilder] =
+    Seq(
+      getAuthWizardPage,
+      postAuthWizardPageHome("${userEori}"),
       getHomePage,
-      getGoodsProfilePage,
-      getGoodsRecordPage,
+      getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
+      getCategorisationStartPage,
+      postCategorisationStartPage,
+      getCategoryAssessmentPage("1"),
+      postCategoryAssessmentPage("1", Yes),
+      getCategoryAssessmentPage("2"),
+      postCategoryAssessmentPage("2", No),
+      getCyaCategorisationPage,
+      postCyaCategorisationPage,
+      getCategoryResultPage("category-1"),
+      getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
+      getAdviceStartPage,
+      postAdviceStartPage,
+      getAskNamePage,
+      postAskNamePage,
+      getAskEmailPage,
+      postAskEmailPage,
+      getAdviceCYAPage,
+      postAdviceCYAPage,
+      getAdviceSuccessPage
+    )
+
+  val categorisationCategory2Good: Seq[HttpRequestBuilder] =
+    Seq(
+      getHomePage,
+      getGoodsRecordPageWithId("3dcd34a4-6a5d-4730-bc7a-92618b132c50"),
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -91,29 +120,10 @@ class TgpSimulation extends PerformanceTestRunner {
       getCategoryResultPage("category-2")
     )
 
-  val createRecordCategory3Goods: Seq[HttpRequestBuilder] =
+  val categorisationCategory3Good: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("GB123456789098"),
       getHomePage,
-      getCreatingAGoodsRecordPage,
-      postCreatingAGoodsRecordPage,
-      getTraderReferencePage,
-      postTraderReferencePage("Category3${reference}"),
-      getGoodsDescriptionQuestionPage,
-      postGoodsDescriptionQuestionPage(Yes),
-      getCountryOfOriginPage,
-      postCountryOfOriginPage("IQ"),
-      getCommodityCodePage,
-      postCommodityCodePage(Yes, "3602000090"),
-      getCommodityCodeResultPage("3602000090"),
-      postCommodityCodeResultPage,
-      getCreateRecordCYAPage,
-      postCreateRecordCYAPage,
-      getCreateRecordSuccessPage,
-      getHomePage,
-      getGoodsProfilePage,
-      getGoodsRecordPage,
+      getGoodsRecordPageWithId("38c33c85-6a8a-4cac-a381-2f17cffbb24f"),
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -137,65 +147,58 @@ class TgpSimulation extends PerformanceTestRunner {
       getCategoryResultPage("standard")
     )
 
-  val createRecordCategory1Goods: Seq[HttpRequestBuilder] =
+  val maintainProfile: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("GB123456789099"),
       getHomePage,
-      getCreatingAGoodsRecordPage,
-      postCreatingAGoodsRecordPage,
-      getTraderReferencePage,
-      postTraderReferencePage("Category1${reference}"),
-      getGoodsDescriptionQuestionPage,
-      postGoodsDescriptionQuestionPage(Yes),
-      getCountryOfOriginPage,
-      postCountryOfOriginPage("IQ"),
-      getCommodityCodePage,
-      postCommodityCodePage(Yes, "9301900000"),
-      getCommodityCodeResultPage("9301900000"),
-      postCommodityCodeResultPage,
-      getCreateRecordCYAPage,
-      postCreateRecordCYAPage,
-      getCreateRecordSuccessPage,
+      getProfileInformationPage,
+      getUpdateUKIMSNumberPage,
+      postUpdateUKIMSNumberPage("XIUKIM47699357400020231115081801"),
+      getUpdateNirmsQuestionPage,
+      postUpdateNirmsQuestionPage(Yes),
+      getUpdateNirmsNumberPage,
+      postUpdateNirmsNumberPage("RMS-GB-123456"),
+      getUpdateNiphlQuestionPage,
+      postUpdateNiphlQuestionPage(Yes),
+      getUpdateNiphlNumberPage,
+      postUpdateNiphlNumberPage("612345")
+    )
+
+  val deleteRecord: Seq[HttpRequestBuilder] =
+    Seq(
       getHomePage,
-      getGoodsProfilePage,
-      getGoodsRecordPage,
-      getCategorisationStartPage,
-      postCategorisationStartPage,
-      getCategoryAssessmentPage("1"),
-      postCategoryAssessmentPage("1", Yes),
-      getCategoryAssessmentPage("2"),
-      postCategoryAssessmentPage("2", No),
-      getCyaCategorisationPage,
-      postCyaCategorisationPage,
-      getCategoryResultPage("category-1"),
-      getHomePage,
-      getGoodsProfilePage,
-      getGoodsRecordPage,
-      getAdviceStartPage,
-      postAdviceStartPage,
-      getAskNamePage,
-      postAskNamePage,
-      getAskEmailPage,
-      postAskEmailPage,
-      getAdviceCYAPage,
-      postAdviceCYAPage,
-      getAdviceSuccessPage
+      getGoodsRecordPageWithId("38c33c85-6a8a-4cac-a381-2f17cffbb24f"),
+      getRemoveGoodsRecordPage,
+      postRemoveGoodsRecordPage(Yes)
     )
 
   setup("test-prep", "Prepare for test") withActions (Setup.setupSession: _*)
 
-  setup("CreateTGPProfile", "TGP Profile Setup Journey With UKIMS, NIRMS And NIPHL")
-    .withRequests(profileSetupJourneyWithUKIMSNIRMSAndNIPHL: _*)
+  setup("MaintainTGPProfile", "Maintain TGP Profile")
+    .withRequests(maintainProfile: _*)
 
-  setup("Category2GoodsJourney", "Create Record, Category 2 With Longer Commodity Code and Supplementary Unit")
-    .withRequests(createRecordCategory2LongerCommodityCodSupplementaryUnit: _*)
+  setup("DeleteTGPRecord", "Delete a TGP record")
+    .withRequests(deleteRecord: _*)
 
-  setup("Category3GoodsJourney", "Create Record, Category 3 Goods Journey")
-    .withRequests(createRecordCategory3Goods: _*)
+  setup("createTGPProfile", "Create TGP Profile")
+    .withRequests(createTGPProfile: _*)
 
-  setup("Category1GoodsRequestAdviceJourney", "Create Record, Category 1 Goods Journey and Request Advice Journey")
-    .withRequests(createRecordCategory1Goods: _*)
+  setup("createRecord", "Create a Record")
+    .withRequests(createRecord: _*)
+
+  setup(
+    "categorisationCategory2Good",
+    "Categorisation Category 2 With Longer Commodity Code and Supplementary Unit"
+  )
+    .withRequests(categorisationCategory2Good: _*)
+
+  setup("categorisationCategory3Good", "Categorisation Category 3 Goods Journey")
+    .withRequests(categorisationCategory3Good: _*)
+
+  setup(
+    "categorisationCategory1GoodAndRequestAdvice",
+    "Categorisation Category 1 Goods Journey and Request Advice Journey"
+  )
+    .withRequests(categorisationCategory1GoodAndRequestAdvice: _*)
 
   runSimulation()
 

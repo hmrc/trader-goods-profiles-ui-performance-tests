@@ -25,10 +25,11 @@ object Requests {
 
   def getPage(
     pageTitle: String,
-    saveToken: Boolean,
     url: String,
+    saveToken: Boolean = false,
     pageContent: Option[String] = None,
-    expectedStatus: Int = OK.code()
+    expectedStatus: Int = OK.code(),
+    saveId: Boolean = false
   ): HttpRequestBuilder = {
     val builder = http("GET " + pageTitle)
       .get(url)
@@ -36,9 +37,20 @@ object Requests {
       .check(currentLocation.is(url))
       .check(regex(pageTitle))
 
+    val updatedBuilder =
+      if (saveId) {
+        val recordId = url.split("/trader-goods-profiles/goods-record/")(1)
+
+        builder.check(
+          regex(pageTitle)
+            .transform(_ => recordId)
+            .saveAs("recordId")
+        )
+      } else builder
+
     val httpRequestBuilder = pageContent match {
-      case Some(value) => builder.check(substring(value))
-      case None        => builder
+      case Some(value) => updatedBuilder.check(substring(value))
+      case None        => updatedBuilder
     }
 
     if (saveToken) {
@@ -47,9 +59,6 @@ object Requests {
       httpRequestBuilder
     }
   }
-
-  def getPage(stepName: String, url: String): HttpRequestBuilder =
-    getPage(stepName, saveToken = false, url, pageContent = None)
 
   def postPage(
     pageName: String,

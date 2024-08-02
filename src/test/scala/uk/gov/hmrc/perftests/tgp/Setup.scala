@@ -18,20 +18,13 @@ package uk.gov.hmrc.perftests.tgp
 
 import io.gatling.core.Predef._
 import io.gatling.core.action.builder.ActionBuilder
-import org.scalacheck.Gen
 
 import java.net.URLEncoder
-import java.util.concurrent.atomic.AtomicInteger
+import scala.util.Random
 
 object Setup {
 
-  private val Counter = new AtomicInteger(1234567891)
-
-  private def eoriGenerator(counter: Int): Gen[String] = Gen.frequency(
-    20 -> Gen.delay(Gen.const(nextEori(counter)))
-  )
-
-  private def randomAlphaNumericString: String = {
+  def randomAlphaNumericString: String = {
     val chars     = ('a' to 'z') ++ ('A' to 'Z') ++ ('0' to '9')
     val reference = List.fill(15)(chars(util.Random.nextInt(chars.length))).mkString("")
     URLEncoder.encode(reference, "UTF-8")
@@ -53,9 +46,15 @@ object Setup {
     */
   val setupSession: List[ActionBuilder] =
     exec { (session: Session) =>
-      // Incrementing unique EORIs
-      val nextId = Counter.incrementAndGet()
-      val eori   = eoriGenerator(nextId).sample.get
+      val nextId = generateRandomNumberOfLength(12)
+      val eori   = s"GB$nextId"
+
       setupSession(eori, session)
     }.actionBuilders
+
+  private def generateRandomNumberOfLength(length: Int): String = {
+    val random = new Random()
+    (1 to length).map(_ => random.nextInt(12)).mkString
+  }
+
 }
