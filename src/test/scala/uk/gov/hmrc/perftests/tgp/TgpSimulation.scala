@@ -92,11 +92,14 @@ class TgpSimulation extends PerformanceTestRunner {
       postAskEmailPage,
       getAdviceCYAPage,
       postAdviceCYAPage,
-      getAdviceSuccessPage
+      getAdviceSuccessPage,
+      getSignOutPage
     )
 
   val categorisationCategory2Good: Seq[HttpRequestBuilder] =
     Seq(
+      getAuthWizardPage,
+      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getGoodsRecordPageWithId("3dcd34a4-6a5d-4730-bc7a-92618b132c50"),
       getCategorisationStartPage,
@@ -117,11 +120,14 @@ class TgpSimulation extends PerformanceTestRunner {
       postSupplementaryUnitPage("11"),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
-      getCategoryResultPage("category-2")
+      getCategoryResultPage("category-2"),
+      getSignOutPage
     )
 
   val categorisationCategory3Good: Seq[HttpRequestBuilder] =
     Seq(
+      getAuthWizardPage,
+      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getGoodsRecordPageWithId("38c33c85-6a8a-4cac-a381-2f17cffbb24f"),
       getCategorisationStartPage,
@@ -144,11 +150,14 @@ class TgpSimulation extends PerformanceTestRunner {
       postCategoryAssessmentPage("8", Yes),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
-      getCategoryResultPage("standard")
+      getCategoryResultPage("standard"),
+      getSignOutPage
     )
 
   val maintainProfile: Seq[HttpRequestBuilder] =
     Seq(
+      getAuthWizardPage,
+      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getProfileInformationPage,
       getUpdateUKIMSNumberPage,
@@ -168,7 +177,8 @@ class TgpSimulation extends PerformanceTestRunner {
       getHomePage,
       getGoodsRecordPageWithId("38c33c85-6a8a-4cac-a381-2f17cffbb24f"),
       getRemoveGoodsRecordPage,
-      postRemoveGoodsRecordPage(Yes)
+      postRemoveGoodsRecordPage(Yes),
+      getSignOutPage
     )
 
   setup("test-prep", "Prepare for test") withActions (Setup.setupSession: _*)
