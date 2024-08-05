@@ -43,15 +43,15 @@ object Setup {
     */
   val setupSession: List[ActionBuilder] =
     exec { (session: Session) =>
-      val nextId = generateRandomNumberOfLength(12)
-      val eori   = s"GB$nextId"
+      val nextId = generateRandomNumberOfLength
+      val eori   = s"GB$nextId" + "123"
 
       setupSession(eori, session)
     }.actionBuilders
 
-  private def generateRandomNumberOfLength(length: Int): String = {
+  private def generateRandomNumberOfLength: String = {
     val random = new Random()
-    (1 to length).map(_ => random.nextInt(12)).mkString
+    (1 to 9).map(_ => random.nextInt(9)).mkString
   }
 
 }
