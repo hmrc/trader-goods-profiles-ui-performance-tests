@@ -30,9 +30,6 @@ object Setup {
     URLEncoder.encode(reference, "UTF-8")
   }
 
-  private def nextEori(counter: Int): String =
-    f"GB$counter%012d"
-
   private def setupSession(eori: String, session: Session): Session =
     session.setAll(
       List(

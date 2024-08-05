@@ -379,6 +379,12 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/result/" + category
     )
 
+  def getSignOutPage: HttpRequestBuilder =
+    getPage(
+      "You have now signed out",
+      s"$tgpUrl/trader-goods-profiles/signed-out"
+    )
+
   def getGoodsProfilePage: HttpRequestBuilder =
     getPage(
       "Goods profile",
