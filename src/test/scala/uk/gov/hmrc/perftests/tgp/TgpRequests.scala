@@ -572,4 +572,175 @@ object TgpRequests extends Configuration {
       s"$tgpUrl/trader-goods-profiles/update-profile/niphl-number",
       Map("value" -> niphlNumber)
     )
+
+  /** *Update Record**
+    */
+
+  def getUpdateTraderReferencePage: HttpRequestBuilder =
+    getPage(
+      "Trader reference",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/trader-reference"
+    )
+
+  def postUpdateTraderReferencePage(ref: String): HttpRequestBuilder =
+    postPage(
+      "enter your Updated Trader Reference",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/trader-reference",
+      Map("value" -> ref)
+    )
+
+  def getUpdateTraderReferenceCYAPage: HttpRequestBuilder =
+    getPage(
+      "Check your answers",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/trader-reference"
+    )
+
+  def postUpdateTraderReferenceCYAPage: HttpRequestBuilder =
+    postPage(
+      "Check your answers",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/trader-reference",
+      Map.empty[String, String]
+    )
+
+  def getChangeGoodsDescriptionPage: HttpRequestBuilder =
+    getPage(
+      "Change record information",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/change-record-warning/goods-description"
+    )
+
+  def postChangeGoodsDescriptionPage(answer: Boolean): HttpRequestBuilder =
+    postPage(
+      "Changing the Goods Description",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/change-record-warning/goods-description",
+      answer.toPayload
+    )
+
+  def getUpdateGoodsDescriptionPage: HttpRequestBuilder =
+    getPage(
+      "Goods description",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/goods-description"
+    )
+
+  def postUpdateGoodsDescriptionPage(Description: String): HttpRequestBuilder =
+    postPage(
+      "enter your Goods Description",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/goods-description",
+      Map("value" -> Description)
+    )
+
+  def getUpdateGoodsDescriptionCYAPage: HttpRequestBuilder =
+    getPage(
+      "Check your answers",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/goods-description"
+    )
+
+  def postUpdateGoodsDescriptionCYAPage: HttpRequestBuilder =
+    postPage(
+      "Check your answers",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/goods-description",
+      Map.empty[String, String]
+    )
+
+  def getChangeCountryOfOriginPage: HttpRequestBuilder =
+    getPage(
+      "Change record information",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/change-record-warning/country-of-origin"
+    )
+
+  def postChangeCountryOfOriginPage(answer: Boolean): HttpRequestBuilder =
+    postPage(
+      "Changing the country of origin",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/change-record-warning/country-of-origin",
+      answer.toPayload
+    )
+
+  def getUpdateCountryOfOriginPage: HttpRequestBuilder =
+    getPage(
+      "Country of origin",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/country-of-origin"
+    )
+
+  def postUpdateCountryOfOriginPage(Country: String): HttpRequestBuilder =
+    postPage(
+      "enter your Country of origin",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/country-of-origin",
+      Map("value" -> Country)
+    )
+
+  def getUpdateCountryOfOriginCYAPage: HttpRequestBuilder =
+    getPage(
+      "Check your answers",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/country-of-origin"
+    )
+
+  def postUpdateCountryOfOriginCYAPage: HttpRequestBuilder =
+    postPage(
+      "Changing the country of origin",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/country-of-origin",
+      Map.empty[String, String]
+    )
+
+  def getChangeCommodityCodePage: HttpRequestBuilder =
+    getPage(
+      "Change record information",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/change-record-warning/commodity-code"
+    )
+
+  def postChangeCommodityCodePage(answer: Boolean): HttpRequestBuilder =
+    postPage(
+      "Changing the Commodity Code",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/change-record-warning/commodity-code",
+      answer.toPayload
+    )
+
+  def getUpdateCommodityCodePage: HttpRequestBuilder =
+    getPage(
+      "Commodity code",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/commodity-code"
+    )
+
+  def postUpdateCommodityCodePage(CommodityCode: String): HttpRequestBuilder =
+    postPage(
+      s"Enter your updated $CommodityCode for $${recordId}",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/commodity-code",
+      Map("value" -> CommodityCode)
+    )
+
+  def getUpdateCommodityCodeResultPage(commodityCode: String): HttpRequestBuilder =
+    getPage(
+      s"Results for $commodityCode",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/commodity-code-result"
+    )
+
+  def postUpdateCommodityCodeResultPage: HttpRequestBuilder =
+    postPage(
+      "Click Yes on Commodity Code Result Page",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/commodity-code-result",
+      true.toPayload
+    )
+
+  def getUpdateCommodityCodeCYAPage: HttpRequestBuilder =
+    getPage(
+      "Check your answers",
+      saveToken = true,
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/commodity-code"
+    )
+
+  def postUpdateCommodityCodeCYAPage: HttpRequestBuilder =
+    postPage(
+      "Check your answers",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/commodity-code",
+      Map.empty[String, String]
+    )
 }
