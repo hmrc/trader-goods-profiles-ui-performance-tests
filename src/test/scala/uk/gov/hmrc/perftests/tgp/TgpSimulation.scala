@@ -201,6 +201,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postUpdateCountryOfOriginPage("GB"),
       getUpdateCountryOfOriginCYAPage,
       postUpdateCountryOfOriginCYAPage,
+      getGoodsRecordPageWithId("3dcd34a4-6a5d-4730-bc7a-92618b132c50"),
       getChangeCommodityCodePage,
       postChangeCommodityCodePage(Yes),
       getUpdateCommodityCodePage,
