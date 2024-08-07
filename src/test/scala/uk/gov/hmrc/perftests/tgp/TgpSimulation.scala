@@ -49,8 +49,6 @@ class TgpSimulation extends PerformanceTestRunner {
 
   val createRecord: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
@@ -70,8 +68,6 @@ class TgpSimulation extends PerformanceTestRunner {
 
   val categorisationCategory1GoodAndRequestAdvice: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
       getCategorisationStartPage,
