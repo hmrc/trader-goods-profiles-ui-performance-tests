@@ -49,8 +49,6 @@ class TgpSimulation extends PerformanceTestRunner {
 
   val createRecord: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getCreatingAGoodsRecordPage,
       postCreatingAGoodsRecordPage,
@@ -70,8 +68,6 @@ class TgpSimulation extends PerformanceTestRunner {
 
   val categorisationCategory1GoodAndRequestAdvice: Seq[HttpRequestBuilder] =
     Seq(
-      getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
       getCategorisationStartPage,
@@ -181,6 +177,37 @@ class TgpSimulation extends PerformanceTestRunner {
       getSignOutPage
     )
 
+  val updateRecord: Seq[HttpRequestBuilder] =
+    Seq(
+      getHomePage,
+      getGoodsRecordPageWithId("3dcd34a4-6a5d-4730-bc7a-92618b132c50"),
+      getUpdateTraderReferencePage,
+      postUpdateTraderReferencePage(randomAlphaNumericString),
+      getUpdateTraderReferenceCYAPage,
+      postUpdateTraderReferenceCYAPage,
+      getChangeGoodsDescriptionPage,
+      postChangeGoodsDescriptionPage(Yes),
+      getUpdateGoodsDescriptionPage,
+      postUpdateGoodsDescriptionPage("Organic Apples"),
+      getUpdateGoodsDescriptionCYAPage,
+      postUpdateGoodsDescriptionCYAPage,
+      getChangeCountryOfOriginPage,
+      postChangeCountryOfOriginPage(Yes),
+      getUpdateCountryOfOriginPage,
+      postUpdateCountryOfOriginPage("GB"),
+      getUpdateCountryOfOriginCYAPage,
+      postUpdateCountryOfOriginCYAPage,
+      getGoodsRecordPageWithId("3dcd34a4-6a5d-4730-bc7a-92618b132c50"),
+      getChangeCommodityCodePage,
+      postChangeCommodityCodePage(Yes),
+      getUpdateCommodityCodePage,
+      postUpdateCommodityCodePage("1704900000"),
+      getUpdateCommodityCodeResultPage("1704900000"),
+      postUpdateCommodityCodeResultPage,
+      getUpdateCommodityCodeCYAPage,
+      postUpdateCommodityCodeCYAPage
+    )
+
   setup("test-prep", "Prepare for test") withActions (Setup.setupSession: _*)
 
   setup("MaintainTGPProfile", "Maintain TGP Profile")
@@ -194,6 +221,9 @@ class TgpSimulation extends PerformanceTestRunner {
 
   setup("createRecord", "Create a Record")
     .withRequests(createRecord: _*)
+
+  setup("updateRecord", "Update a Record")
+    .withRequests(updateRecord: _*)
 
   setup(
     "categorisationCategory2Good",
