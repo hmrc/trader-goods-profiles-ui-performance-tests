@@ -70,6 +70,7 @@ class TgpSimulation extends PerformanceTestRunner {
     Seq(
       getHomePage,
       getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
+      getCategorisationPreparationPage,
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -78,7 +79,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postCategoryAssessmentPage("2", No),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
-      getCategoryResultPage("category-1"),
+      getCategoryResultPage("Categorisation complete", "category-1"),
       getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
       getAdviceStartPage,
       postAdviceStartPage,
@@ -98,6 +99,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getGoodsRecordPageWithId("3dcd34a4-6a5d-4730-bc7a-92618b132c50"),
+      getCategorisationPreparationPage,
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -108,7 +110,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postCategoryAssessmentPage("3", No),
       getLongerCommodityCodePage,
       postLongerCommodityCodePage("99"),
-      getLongerCommodityCodeResultPage("1704909900"),
+      getLongerCommodityCodeResultPage("17049099"),
       postLongerCommodityCodeResultPage,
       getSupplementaryQuestionPage,
       postSupplementaryQuestionPage,
@@ -116,7 +118,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postSupplementaryUnitPage("11"),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
-      getCategoryResultPage("category-2"),
+      getCategoryResultPage("Categorisation complete", "category-2"),
       getSignOutPage
     )
 
@@ -126,6 +128,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postAuthWizardPageHome("${userEori}"),
       getHomePage,
       getGoodsRecordPageWithId("38c33c85-6a8a-4cac-a381-2f17cffbb24f"),
+      getCategorisationPreparationPage,
       getCategorisationStartPage,
       postCategorisationStartPage,
       getCategoryAssessmentPage("1"),
@@ -146,7 +149,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postCategoryAssessmentPage("8", Yes),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
-      getCategoryResultPage("standard"),
+      getCategoryResultPage("Standard goods", "standard"),
       getSignOutPage
     )
 
