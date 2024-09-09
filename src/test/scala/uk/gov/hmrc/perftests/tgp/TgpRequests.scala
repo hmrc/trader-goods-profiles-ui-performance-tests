@@ -279,6 +279,12 @@ object TgpRequests extends Configuration {
       url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/start"
     )
 
+  def getCategorisationPreparationPage: HttpRequestBuilder =
+    getPageWithOtherCode(
+      "Categorisation Preparation",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/categorisation-preparation"
+    )
+
   def postCategorisationStartPage: HttpRequestBuilder =
     postPage(
       "Categorisation",
@@ -373,9 +379,9 @@ object TgpRequests extends Configuration {
       Map.empty[String, String]
     )
 
-  def getCategoryResultPage(category: String): HttpRequestBuilder =
+  def getCategoryResultPage(title: String, category: String): HttpRequestBuilder =
     getPage(
-      "Categorisation complete",
+      title,
       s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/result/" + category
     )
 

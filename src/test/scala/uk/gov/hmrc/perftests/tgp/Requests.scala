@@ -60,6 +60,16 @@ object Requests {
     }
   }
 
+  def getPageWithOtherCode(
+    pageTitle: String,
+    url: String,
+    expectedStatus: Int = SEE_OTHER.code()
+  ): HttpRequestBuilder =
+    http("GET " + pageTitle)
+      .get(url)
+      .check(status.is(expectedStatus))
+      .check(currentLocation.is(url))
+
   def postPage(
     pageName: String,
     currentPage: String,
