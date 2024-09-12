@@ -296,15 +296,15 @@ object TgpRequests extends Configuration {
     getPage(
       "Category assessment " + categoryNumber,
       saveToken = true,
-      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/category-assessment/" + (Integer
-        .parseInt(categoryNumber.trim) - 1)
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/category-assessment/" + Integer
+        .parseInt(categoryNumber.trim)
     )
 
   def postCategoryAssessmentPage(categoryNumber: String, answer: Boolean): HttpRequestBuilder =
     postPage(
       "Category assessment " + categoryNumber,
-      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/category-assessment/" + (Integer
-        .parseInt(categoryNumber.trim) - 1),
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/category-assessment/" + Integer
+        .parseInt(categoryNumber.trim),
       answer.toPayload
     )
 
