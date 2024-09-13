@@ -60,7 +60,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postCountryOfOriginPage("GB"),
       getCommodityCodePage,
       postCommodityCodePage(Yes, "170490"),
-      getCommodityCodeResultPage("1704900000"),
+      getCommodityCodeResultPage("170490"),
       postCommodityCodeResultPage,
       getCreateRecordCYAPage,
       postCreateRecordCYAPage
@@ -204,8 +204,8 @@ class TgpSimulation extends PerformanceTestRunner {
       getChangeCommodityCodePage,
       postChangeCommodityCodePage(Yes),
       getUpdateCommodityCodePage,
-      postUpdateCommodityCodePage("1704900000"),
-      getUpdateCommodityCodeResultPage("1704900000"),
+      postUpdateCommodityCodePage("170490"),
+      getUpdateCommodityCodeResultPage("170490"),
       postUpdateCommodityCodeResultPage,
       getUpdateCommodityCodeCYAPage,
       postUpdateCommodityCodeCYAPage
