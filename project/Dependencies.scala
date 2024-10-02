@@ -7,7 +7,7 @@ object Dependencies {
   private val test: Seq[ModuleID] = Seq(
     "io.gatling"            % "gatling-test-framework"    % gatlingVersion,
     "io.gatling.highcharts" % "gatling-charts-highcharts" % gatlingVersion,
-    "uk.gov.hmrc"          %% "performance-test-runner"   % "5.6.0",
+    "uk.gov.hmrc"          %% "performance-test-runner"   % "6.1.0",
     "org.mongodb.scala"    %% "mongo-scala-driver"        % "4.9.0",
     "org.scalacheck"       %% "scalacheck"                % "1.17.0",
     "com.typesafe"          % "config"                    % "1.4.2"

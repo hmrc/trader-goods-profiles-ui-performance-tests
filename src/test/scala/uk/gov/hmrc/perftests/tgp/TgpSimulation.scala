@@ -79,7 +79,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postCategoryAssessmentPage("2", No),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
-      getCategoryResultPage("Categorisation complete", "category-1"),
+      getCategoryResultPage("Category 1", "category-1"),
       getGoodsRecordPageWithId("fdd243d4-03e5-4936-a0de-2d88fb0439ce"),
       getAdviceStartPage,
       postAdviceStartPage,
@@ -118,7 +118,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postSupplementaryUnitPage("11"),
       getCyaCategorisationPage,
       postCyaCategorisationPage,
-      getCategoryResultPage("Categorisation complete", "category-2"),
+      getCategoryResultPage("Category 2", "category-2"),
       getSignOutPage
     )
 
