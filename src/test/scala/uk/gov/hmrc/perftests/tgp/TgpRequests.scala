@@ -169,20 +169,6 @@ object TgpRequests extends Configuration {
       Map("value" -> ref)
     )
 
-  def getGoodsDescriptionQuestionPage: HttpRequestBuilder =
-    getPage(
-      "Goods description",
-      saveToken = true,
-      url = s"$tgpUrl/trader-goods-profiles/create-record/goods-description-question"
-    )
-
-  def postGoodsDescriptionQuestionPage(answer: Boolean): HttpRequestBuilder =
-    postPage(
-      "Click Yes or No on Goods Description Question Page",
-      s"$tgpUrl/trader-goods-profiles/create-record/goods-description-question",
-      answer.toPayload
-    )
-
   def getGoodsDescriptionPage: HttpRequestBuilder =
     getPage(
       "Goods description",
@@ -190,16 +176,12 @@ object TgpRequests extends Configuration {
       url = s"$tgpUrl/trader-goods-profiles/create-record/goods-description"
     )
 
-  def postGoodsDescriptionPage: HttpRequestBuilder = {
-    val enterGoodsDescription = Map(
-      "value" -> "Goods"
-    )
+  def postGoodsDescriptionPage(goodsDescription: String): HttpRequestBuilder =
     postPage(
       "enter your Goods Description",
       s"$tgpUrl/trader-goods-profiles/create-record/goods-description",
-      enterGoodsDescription
+      Map("value" -> goodsDescription)
     )
-  }
 
   def getCountryOfOriginPage: HttpRequestBuilder =
     getPage(
