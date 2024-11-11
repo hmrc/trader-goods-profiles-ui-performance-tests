@@ -287,7 +287,7 @@ object TgpRequests extends Configuration {
       "Category assessment " + categoryNumber,
       s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/category-assessment/" + Integer
         .parseInt(categoryNumber.trim),
-      Map("value" -> answer(0))
+      Map("value[]" -> answer(0))
     )
 
   def getLongerCommodityCodePage: HttpRequestBuilder =
@@ -335,7 +335,7 @@ object TgpRequests extends Configuration {
 
   def getSupplementaryUnitPage: HttpRequestBuilder =
     getPage(
-      "",
+      "What is the good’s supplementary unit?",
       saveToken = true,
       url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/supplementary-unit-amount/create"
     )
@@ -347,16 +347,16 @@ object TgpRequests extends Configuration {
       Map("value" -> Unit)
     )
 
-  def getCyaCategorisationPage: HttpRequestBuilder =
+  def getCyaCategorisationPage(Commodity: String): HttpRequestBuilder =
     getPage(
-      "Check your answers",
+      s"Check your category assessment answers for $Commodity",
       saveToken = true,
       url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/check-your-answers"
     )
 
   def postCyaCategorisationPage: HttpRequestBuilder =
     postPage(
-      "Check your answers",
+      "Check your category assessment answers",
       s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/check-your-answers",
       Map.empty[String, String]
     )
