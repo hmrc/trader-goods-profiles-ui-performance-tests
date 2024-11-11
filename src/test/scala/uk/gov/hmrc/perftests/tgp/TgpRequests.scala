@@ -176,11 +176,11 @@ object TgpRequests extends Configuration {
       url = s"$tgpUrl/trader-goods-profiles/create-record/goods-description"
     )
 
-  def postGoodsDescriptionPage(goodsRef: String): HttpRequestBuilder =
+  def postGoodsDescriptionPage(goodsDescription: String): HttpRequestBuilder =
     postPage(
       "enter your Goods Description",
       s"$tgpUrl/trader-goods-profiles/create-record/goods-description",
-      Map("value" -> goodsRef)
+      Map("value" -> goodsDescription)
     )
 
   def getCountryOfOriginPage: HttpRequestBuilder =
