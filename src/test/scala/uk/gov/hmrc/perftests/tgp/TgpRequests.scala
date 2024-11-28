@@ -221,7 +221,7 @@ object TgpRequests extends Configuration {
 
   def getCommodityCodeResultPage(commodityCode: String): HttpRequestBuilder =
     getPage(
-      "Results for " + commodityCode,
+      s"Results for the commodity code $commodityCode",
       saveToken = true,
       url = s"$tgpUrl/trader-goods-profiles/create-record/commodity-code-result"
     )
@@ -306,7 +306,7 @@ object TgpRequests extends Configuration {
 
   def getLongerCommodityCodeResultPage(longerCommodityCode: String): HttpRequestBuilder =
     getPage(
-      "Results for " + longerCommodityCode,
+      s"Results for the commodity code $longerCommodityCode",
       saveToken = true,
       url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/categorisation/longer-commodity-code-result"
     )
@@ -706,7 +706,7 @@ object TgpRequests extends Configuration {
 
   def getUpdateCommodityCodeResultPage(commodityCode: String): HttpRequestBuilder =
     getPage(
-      s"Results for $commodityCode",
+      s"Results for the commodity code $commodityCode",
       saveToken = true,
       url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/commodity-code-result"
     )
