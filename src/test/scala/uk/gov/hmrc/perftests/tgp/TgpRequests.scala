@@ -137,7 +137,7 @@ object TgpRequests extends Configuration {
 
   def getHomePage: HttpRequestBuilder =
     getPage(
-      "Trader Goods Profile homepage",
+      "Trader Goods Profile \\(TGP\\) homepage",
       s"$tgpUrl/trader-goods-profiles/homepage"
     )
 
@@ -594,7 +594,7 @@ object TgpRequests extends Configuration {
 
   def getChangeGoodsDescriptionPage: HttpRequestBuilder =
     getPage(
-      "Change record information",
+      "Changing the goods description",
       saveToken = true,
       url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/change-record-warning/goods-description"
     )
@@ -636,7 +636,7 @@ object TgpRequests extends Configuration {
 
   def getChangeCountryOfOriginPage: HttpRequestBuilder =
     getPage(
-      "Change record information",
+      "Changing the country of origin",
       saveToken = true,
       url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/change-record-warning/country-of-origin"
     )
@@ -678,7 +678,7 @@ object TgpRequests extends Configuration {
 
   def getChangeCommodityCodePage: HttpRequestBuilder =
     getPage(
-      "Change record information",
+      "Changing the commodity code",
       saveToken = true,
       url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/change-record-warning/commodity-code"
     )
