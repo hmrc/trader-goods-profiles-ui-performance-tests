@@ -207,8 +207,7 @@ class TgpSimulation extends PerformanceTestRunner {
       postUpdateCommodityCodePage("170490"),
       getUpdateCommodityCodeResultPage("170490"),
       postUpdateCommodityCodeResultPage,
-      getUpdateCommodityCodeCYAPage,
-      postUpdateCommodityCodeCYAPage
+      getUpdatedCommodityCodeSuccessPage
     )
 
   setup("test-prep", "Prepare for test") withActions (Setup.setupSession: _*)
