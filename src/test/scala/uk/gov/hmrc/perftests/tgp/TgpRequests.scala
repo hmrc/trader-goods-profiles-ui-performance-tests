@@ -155,17 +155,17 @@ object TgpRequests extends Configuration {
       Map.empty[String, String]
     )
 
-  def getTraderReferencePage: HttpRequestBuilder =
+  def getProductReferencePage: HttpRequestBuilder =
     getPage(
-      "Trader reference",
+      "Product reference",
       saveToken = true,
-      url = s"$tgpUrl/trader-goods-profiles/create-record/trader-reference"
+      url = s"$tgpUrl/trader-goods-profiles/create-record/product-reference"
     )
 
-  def postTraderReferencePage(ref: String): HttpRequestBuilder =
+  def postProductReferencePage(ref: String): HttpRequestBuilder =
     postPage(
-      "enter your Trader Reference",
-      s"$tgpUrl/trader-goods-profiles/create-record/trader-reference",
+      "enter your Product reference",
+      s"$tgpUrl/trader-goods-profiles/create-record/product-reference",
       Map("value" -> ref)
     )
 
@@ -380,11 +380,11 @@ object TgpRequests extends Configuration {
       url = s"""$tgpUrl/trader-goods-profiles/goods-profile?page=1"""
     )
 
-  def postGoodsProfilePage(traderReference: String): HttpRequestBuilder =
+  def postGoodsProfilePage(productReference: String): HttpRequestBuilder =
     postPage(
       "Goods profile",
       s"""$tgpUrl/trader-goods-profiles/goods-profile?page=1""",
-      Map("value" -> traderReference)
+      Map("value" -> productReference)
     )
 
   def getGoodsRecordPage: HttpRequestBuilder =
@@ -564,31 +564,31 @@ object TgpRequests extends Configuration {
   /** *Update Record**
     */
 
-  def getUpdateTraderReferencePage: HttpRequestBuilder =
+  def getUpdateProductReferencePage: HttpRequestBuilder =
     getPage(
-      "Trader reference",
+      "Product reference",
       saveToken = true,
-      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/trader-reference"
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/product-reference"
     )
 
-  def postUpdateTraderReferencePage(ref: String): HttpRequestBuilder =
+  def postUpdateProductReferencePage(ref: String): HttpRequestBuilder =
     postPage(
-      "enter your Updated Trader Reference",
-      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/trader-reference",
+      "enter your Updated Product reference",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/product-reference",
       Map("value" -> ref)
     )
 
-  def getUpdateTraderReferenceCYAPage: HttpRequestBuilder =
+  def getUpdateProductReferenceCYAPage: HttpRequestBuilder =
     getPage(
-      "Check your answers for changing the trader reference",
+      "Check your answers for changing the product reference",
       saveToken = true,
-      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/trader-reference"
+      url = s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/product-reference"
     )
 
-  def postUpdateTraderReferenceCYAPage: HttpRequestBuilder =
+  def postUpdateProductReferenceCYAPage: HttpRequestBuilder =
     postPage(
-      "Check your answers for changing the trader reference",
-      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/trader-reference",
+      "Check your answers for changing the Product reference",
+      s"$tgpUrl/trader-goods-profiles/update-record/$${recordId}/check-your-answers/product-reference",
       Map.empty[String, String]
     )
 
