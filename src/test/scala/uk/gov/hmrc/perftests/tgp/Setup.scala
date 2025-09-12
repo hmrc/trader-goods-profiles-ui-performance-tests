@@ -39,7 +39,7 @@ object Setup {
     )
 
   /** Add a random reference and EORI to the session to be used by requests in the simulation set on the session through
-    * session.set or session.setAll accessed from session by $${userEori}
+    * session.set or session.setAll accessed from session by #{userEori}
     */
   val setupSession: List[ActionBuilder] =
     exec { (session: Session) =>
