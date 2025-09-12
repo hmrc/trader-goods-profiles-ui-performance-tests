@@ -77,7 +77,7 @@ object Requests {
   ): HttpRequestBuilder =
     http("POST " + pageName)
       .post(currentPage)
-      .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
+      .formParamMap(payload + ("csrfToken" -> f"#{csrfToken}"))
       .check(status.is(SEE_OTHER.code()))
       .check(currentLocation.is(currentPage))
       .disableFollowRedirect
@@ -97,7 +97,7 @@ object Requests {
 
     http("POST " + pageName)
       .post(currentPage)
-      .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
+      .formParamMap(payload + ("csrfToken" -> f"#{csrfToken}"))
       .check(status.is(SEE_OTHER.code()))
       .check(
         header("location")
@@ -112,7 +112,7 @@ object Requests {
   ): HttpRequestBuilder =
     http("POST " + pageName)
       .post(currentPage)
-      .formParamMap(payload + ("csrfToken" -> f"$${csrfToken}"))
+      .formParamMap(payload + ("csrfToken" -> f"#{csrfToken}"))
       .check(status.is(BAD_REQUEST.code()))
       .check(currentLocation.is(currentPage))
       .disableFollowRedirect

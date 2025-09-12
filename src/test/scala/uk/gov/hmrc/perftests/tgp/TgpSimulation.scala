@@ -29,7 +29,7 @@ class TgpSimulation extends PerformanceTestRunner {
   val createTGPProfile: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageProfileSetup("${userEori}"),
+      postAuthWizardPageProfileSetup("#{userEori}"),
       getTGPProfilePage,
       postTGPProfilePage,
       getUkimsNumberPage,
@@ -96,7 +96,7 @@ class TgpSimulation extends PerformanceTestRunner {
   val categorisationCategory2Good: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
+      postAuthWizardPageHome("#{userEori}"),
       getHomePage,
       getGoodsRecordPageWithId("3dcd34a4-6a5d-4730-bc7a-92618b132c50"),
       getCategorisationPreparationPage,
@@ -125,7 +125,7 @@ class TgpSimulation extends PerformanceTestRunner {
   val categorisationCategory3Good: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
+      postAuthWizardPageHome("#{userEori}"),
       getHomePage,
       getGoodsRecordPageWithId("38c33c85-6a8a-4cac-a381-2f17cffbb24f"),
       getCategorisationPreparationPage,
@@ -156,7 +156,7 @@ class TgpSimulation extends PerformanceTestRunner {
   val maintainProfile: Seq[HttpRequestBuilder] =
     Seq(
       getAuthWizardPage,
-      postAuthWizardPageHome("${userEori}"),
+      postAuthWizardPageHome("#{userEori}"),
       getHomePage,
       getProfileInformationPage,
       getUpdateUKIMSNumberPage,
